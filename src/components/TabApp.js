@@ -13,6 +13,9 @@ import {
   Button,
   Grid,
   Hidden,
+  Menu,
+  MenuItem,
+  Collapse,
 } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { lightBlue } from "@material-ui/core/colors";
@@ -59,59 +62,48 @@ export default class TabApp extends React.Component {
         >
           <Grid
             container
-            justify="center"
+            justify="space-around"
             alignItems="center"
             direction="row"
           >
-            <Hidden smDown >
-              <img
-                src={CPEIcon}
-                style={{ maxHeight: "9vh" }}
-                onClick={this.handleCPEButtonClick}
-              />
+            <Hidden smDown>
+              <Grid>
+                <img
+                  src={CPEIcon}
+                  style={{ maxHeight: "9vh" }}
+                  onClick={this.handleCPEButtonClick}
+                />
+              </Grid>
             </Hidden>
-            <Grid item xs={8}>
-              <Tabs
-                value={this.state.tabselected}
-                onChange={this.handleTabsChange}
-                aria-label="simple tabs example"
-                style={{ minHeight: "10vh" }}
-              >
-                <Tab
-                  label="HOME"
-                  style={{ minHeight: "10vh", width: "15vw" }}
-                />
-                <Tab
-                  label="NEWS"
-                  style={{ minHeight: "10vh", width: "15vw" }}
-                />
-                <Tab
-                  label="ABOUT US"
-                  style={{ minHeight: "10vh", width: "15vw" }}
-                />
-                <Tab
-                  label="HELP"
-                  style={{ minHeight: "10vh", width: "15vw" }}
-                />
-              </Tabs>
-            </Grid>
-            <Grid item >
-              <Button
-                variant="outlined"
-                onClick={this.handleLogInButtonClick}
-                startIcon={<ExitToAppIcon />}
-                style={{
-                  borderRadius: 20,
-                  color: lightBlue[400],
-                  borderColor: lightBlue[400],
-                  backgroundColor: "white",
-                  minWidth: "10vw",
-                  minHeight: "6vh",
-                }}
-              >
-                <Typography>Log In</Typography>
-              </Button>
-            </Grid>
+            <Tabs
+              value={this.state.tabselected}
+              onChange={this.handleTabsChange}
+              aria-label="simple tabs example"
+              style={{ minHeight: "10vh", minWidth: "60vw" }}
+              centered
+              indicatorColor="primary"
+              variant="fullWidth"
+            >
+              <Tab label="HOME" style={{ minHeight: "10vh" }} />
+              <Tab label="NEWS" style={{ minHeight: "10vh" }} />
+              <Tab label="ABOUT US" style={{ minHeight: "10vh" }} />
+              <Tab label="HELP" style={{ minHeight: "10vh" }} />
+            </Tabs>
+            <Button
+              variant="outlined"
+              onClick={this.handleLogInButtonClick}
+              startIcon={<ExitToAppIcon />}
+              style={{
+                borderRadius: 20,
+                color: lightBlue[400],
+                borderColor: lightBlue[400],
+                backgroundColor: "white",
+                minWidth: "10vw",
+                minHeight: "6vh",
+              }}
+            >
+              <Typography>Log In</Typography>
+            </Button>
           </Grid>
         </AppBar>
         {tabContent}

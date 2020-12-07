@@ -19,7 +19,6 @@ import { Button, ButtonBase, CardActionArea, Container } from "@material-ui/core
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import {Link} from '@material-ui/core';
 import { Link as RouterLink}  from 'react-router-dom'
-import PostCard from "./PostCard";
 import { URL } from "../defaults.json";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import { indigo, grey } from "@material-ui/core/colors";
@@ -84,7 +83,7 @@ export default class Post extends React.Component {
             backgroundColor: color,
           }}
         >
-          <Link component={RouterLink} to={`/user/${post.authorName}/post/${post.id}`} underline='none' >
+          <Link component={RouterLink} to={`/user/${post.authorName}/post/${post._id}`} underline='none' >
             <Container style={{padding: '0'}}>
             <CardHeader
               avatar={<Avatar src={post.avatar}></Avatar>}

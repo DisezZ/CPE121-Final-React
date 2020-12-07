@@ -14,6 +14,8 @@ export default class CommentCollapse extends React.Component {
     super(props);
   }
 
+  handleSendButton
+
   render() {
     const { status } = this.props;
     return (
@@ -22,7 +24,7 @@ export default class CommentCollapse extends React.Component {
         <CardContent>
           <Typography>Comment</Typography>
           <TextField
-            id="filled-basic"
+            id="comment"
             label="Comment here..."
             variant="filled"
             multiline

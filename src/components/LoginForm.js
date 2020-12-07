@@ -87,6 +87,7 @@ export default class LoginForm extends React.Component {
             />
             {this.redirectRender}
             <Button
+              className="App"
               onClick={this.onSubmitButtonPressed}
               fullWidth
               variant="contained"

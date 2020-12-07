@@ -15,10 +15,17 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Button, ButtonBase, CardActionArea, Container } from "@material-ui/core";
+import {
+  Button,
+  ButtonBase,
+  CardActionArea,
+  Container,
+  Grid,
+  Paper,
+} from "@material-ui/core";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
-import {Link} from '@material-ui/core';
-import { Link as RouterLink}  from 'react-router-dom'
+import { Link } from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom";
 import { URL } from "../defaults.json";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import { indigo, grey } from "@material-ui/core/colors";
@@ -74,57 +81,72 @@ export default class Post extends React.Component {
       monthName[post.dateCreated.getMonth()]
     } ${post.dateCreated.getFullYear()}`;
     return (
-      <Container maxWidth="md" style={{ minWidth: "300px" }}>
-        <Card
-          style={{
-            maxWidth: "750px",
-            marginTop: "10px",
-            minWidth: "200px",
-            backgroundColor: color,
-          }}
-        >
-          <Link component={RouterLink} to={`/user/${post.authorName}/post/${post._id}`} underline='none' >
-            <Container style={{padding: '0'}}>
-            <CardHeader
-              avatar={<Avatar src={post.avatar}></Avatar>}
-              title={
-                <Typography variant="h5" component="h5" style={{color: 'black'}} >
-                  {post.topic}
-                </Typography>
-              }
-              subheader={
-                <Typography component='h6' style={{color:'black'}} >
-                  {`@${post.authorName}`}
-                  {`\t${dateCreated}`}
-                </Typography>
-              }
-              action={
-                <IconButton>
-                  <MoreVertIcon></MoreVertIcon>
-                </IconButton>
-              }
-            ></CardHeader>
-            <CardContent>
-              <Typography style={{color:'black'}} >{`${post.content.slice(0, 465)}`}</Typography>
-            </CardContent>
-            </Container>
-            </Link>
-          <CardActions>
-            <LikeButton
-              status={favorite}
-              handleFavoriteClick={this.handleFavoriteClick}
-            />
-            <CommentButton
-              status={comment}
-              handleCommentClick={this.handleCommentClick}
-            />
-            <UpvoteButton
-              status={upvote}
-              handleUpvoteClick={this.handleUpvoteClick}
-            />
-          </CardActions>
-          <CommentCollapse status={comment}></CommentCollapse>
-        </Card>
+      <Container>
+        <Grid container justify="center">
+          <Grid item>
+            <Card
+              style={{
+                maxWidth: "90vw",
+                width: "750px",
+                marginTop: "10px",
+                minWidth: "200px",
+                backgroundColor: color,
+              }}
+            >
+              <Link
+                component={RouterLink}
+                to={`/user/${post.authorName}/post/${post._id}`}
+                underline="none"
+              >
+                <Container style={{ padding: "0" }}>
+                  <CardHeader
+                    avatar={<Avatar src={post.avatar}></Avatar>}
+                    title={
+                      <Typography
+                        variant="h5"
+                        component="h5"
+                        style={{ color: "black" }}
+                      >
+                        {post.topic}
+                      </Typography>
+                    }
+                    subheader={
+                      <Typography component="h6" style={{ color: "black" }}>
+                        {`@${post.authorName}`}
+                        {`\t${dateCreated}`}
+                      </Typography>
+                    }
+                    action={
+                      <IconButton>
+                        <MoreVertIcon></MoreVertIcon>
+                      </IconButton>
+                    }
+                  ></CardHeader>
+                  <CardContent>
+                    <Typography
+                      style={{ color: "black" }}
+                    >{`${post.content.slice(0, 465)}`}</Typography>
+                  </CardContent>
+                </Container>
+              </Link>
+              <CardActions>
+                <LikeButton
+                  status={favorite}
+                  handleFavoriteClick={this.handleFavoriteClick}
+                />
+                <CommentButton
+                  status={comment}
+                  handleCommentClick={this.handleCommentClick}
+                />
+                <UpvoteButton
+                  status={upvote}
+                  handleUpvoteClick={this.handleUpvoteClick}
+                />
+              </CardActions>
+              <CommentCollapse status={comment}></CommentCollapse>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     );
   }

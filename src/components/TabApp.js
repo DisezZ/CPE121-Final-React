@@ -3,7 +3,6 @@ import Home from "../components/Home";
 import News from "../components/News";
 import AboutUs from "../components/AboutUs";
 import Help from "../components/Help";
-import CPEIcon from "../image/AlternativeLogo.png";
 import {
   AppBar,
   Tabs,
@@ -69,7 +68,7 @@ export default class TabApp extends React.Component {
             <Hidden smDown>
               <Grid>
                 <img
-                  src={CPEIcon}
+                  src={'/AlternativeLogo.png'}
                   style={{ maxHeight: "9vh" }}
                   onClick={this.handleCPEButtonClick}
                 />

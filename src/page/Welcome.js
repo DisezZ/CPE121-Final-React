@@ -4,6 +4,7 @@ import TabApp from "../components/TabApp";
 import {
   Grid, Button
 } from "@material-ui/core";
+import CPEBackground from '../components/PrimaryLogo-eng@3x.png'
 
 export default class Welcome extends React.Component {
   constructor(props) {

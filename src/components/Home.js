@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import { orange } from "@material-ui/core/colors";
+import CPEBackground from './PrimaryLogo-eng@3x.png';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <div style={{backgroundImage: `url(${'/PrimaryLogo-eng@3x.png'})`}}>
+      <div style={{backgroundImage: `url(${CPEBackground})`, height: '80vh', backgroundSize: 'cover'}}>
         <Grid container justify='center' >
           <Grid item>
             <Button
@@ -33,4 +34,3 @@ export default class Home extends React.Component {
     );
   }
 }
-

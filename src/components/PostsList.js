@@ -30,7 +30,7 @@ export default class PostsList extends React.Component {
   render() {
     const { posts } = this.state;
     return (
-      <Grid>
+      <Grid style={{marginTop:'10vh'}}>
         {posts.map((post, index) => {
           return <Post post={post} />;
         })}

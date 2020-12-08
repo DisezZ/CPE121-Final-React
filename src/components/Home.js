@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import { orange } from "@material-ui/core/colors";
-import CPEBackground from './PrimaryLogo-eng@3x.png';
+import CPEBackground from '../image/PrimaryLogo-eng@3x.png';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -24,6 +24,7 @@ export default class Home extends React.Component {
                 borderRadius: 20,
                 backgroundColor: orange[800],
                 color: "white",
+                marginTop: '75vh'
               }}
             >
               <Typography variant="h5">Sign In</Typography>

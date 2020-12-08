@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { lightBlue } from "@material-ui/core/colors";
+import CPEImage from "../image/AlternativeLogo.png"
 
 export default class TabApp extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ export default class TabApp extends React.Component {
     return (
       <div>
         <AppBar
-          position="static"
+          position="fixed"
           style={{ color: "black", backgroundColor: "white" }}
         >
           <Grid
@@ -73,7 +74,7 @@ export default class TabApp extends React.Component {
           >
             <Grid>
               <img
-                src='/AlternativeLogo.png'
+                src={CPEImage}
                 style={{ maxHeight: "9vh" }}
                 onClick={this.handleCPEButtonClick}
               />

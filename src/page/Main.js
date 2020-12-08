@@ -15,7 +15,7 @@ export default class Main extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{backgroundColor: 'blueviolet'}} >
                 <AppBar></AppBar>
                 <PostList></PostList>
             </div>

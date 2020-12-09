@@ -45,7 +45,7 @@ export default class Main extends React.Component {
       });
       //console.log("Hello")
     });
-    //console.log(this.state.posts)
+    console.log(this.state.posts)
   };
 
   render() {

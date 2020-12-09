@@ -10,6 +10,7 @@ import Redirect from "./components/Redirect";
 import Login from './page/Login'
 import Signup from './page/Signup'
 import Main from './page/Main'
+import Post from './page/Post'
 
 
 class App extends React.Component {
@@ -65,9 +66,7 @@ class App extends React.Component {
             <Route exact path="/user/:username">
               <div>user</div>
             </Route>
-            <Route exact path="/user/:username/post/:id">
-              <div>user post</div>
-            </Route>
+            <Route exact path="/user/:username/post/:id" component={Post} />
           </Switch>
         </Router>
       </div>

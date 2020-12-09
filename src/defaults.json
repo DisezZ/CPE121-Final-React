@@ -1,4 +1,4 @@
 {
-    "BaseURL": "https://backend-cpe-web-board.herokuapp.com",
+    "BaseURL": "http://localhost:5000",
     "URL": "http://localhost:3000"
 }

@@ -30,7 +30,7 @@ export default class CommentCollapse extends React.Component {
             multiline
             fullWidth
           />
-          <Grid container direction="row-reverse" spacing='3' style={{marginTop:'10px'}}>
+          <Grid container direction="row-reverse" spacing={3} style={{marginTop:'10px'}}>
             <Grid item>
               <Button variant="contained" color="primary">
                 Send

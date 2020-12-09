@@ -26,7 +26,7 @@ class App extends React.Component {
 
   handleAuthCheck = async () => {
     const token = Cookie.get('token')
-    console.log(token)
+    //console.log(token)
     if (token) {
       await Axios.post(BaseURL + '/auth', { token: token })
       .then((res) => {

@@ -1,7 +1,7 @@
 import React from "react";
-import Axios from "axios"
-import Cookie from 'js-cookie'
-import { BaseURL } from "../defaults.json"
+import Axios from "axios";
+import Cookie from "js-cookie";
+import { BaseURL } from "../defaults.json";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -63,34 +63,34 @@ export default class Post extends React.Component {
   }
 
   componentDidMount() {
-    const { post, userInfo } = this.props
-    const { liked, upvoted } = post
+    const { post, userInfo } = this.props;
+    const { liked, upvoted } = post;
     liked.forEach((likedBy) => {
       if (likedBy.userID === userInfo._id) {
-        this.setState({ favorite: true })
+        this.setState({ favorite: true });
       }
-    })
+    });
     upvoted.forEach((upvotedBy) => {
       if (upvotedBy.userID === userInfo._id) {
-        this.setState({ upvote: true })     
+        this.setState({ upvote: true });
       }
-    })
+    });
   }
 
   handleFavoriteClick = async () => {
-    const { post } = this.props
-    const token = Cookie.get("token")
-    const to = post._id
+    const { post } = this.props;
+    const token = Cookie.get("token");
+    const to = post._id;
     var data = {
       token: token,
       to: to,
-      action: "like"
-    }
-    Axios.post(BaseURL+'/postAction/',data).then((res) => {
-      if(res.data.value) {
-        this.setState({ favorite: !this.state.favorite })
+      action: "like",
+    };
+    Axios.post(BaseURL + "/postAction/", data).then((res) => {
+      if (res.data.value) {
+        this.setState({ favorite: !this.state.favorite });
       }
-    })
+    });
   };
 
   handleCommentClick = async () => {
@@ -98,98 +98,92 @@ export default class Post extends React.Component {
   };
 
   handleUpvoteClick = async () => {
-    const { post } = this.props
-    const token = Cookie.get("token")
-    const to = post._id
+    const { post } = this.props;
+    const token = Cookie.get("token");
+    const to = post._id;
     var data = {
       token: token,
       to: to,
-      action: "upvote"
-    }
-    Axios.post(BaseURL+'/postAction/',data).then(async (res) => {
-      if(res.data.value) {
-        await this.setState({ upvote: !this.state.upvote })
+      action: "upvote",
+    };
+    Axios.post(BaseURL + "/postAction/", data).then(async (res) => {
+      if (res.data.value) {
+        await this.setState({ upvote: !this.state.upvote });
       }
-    })
+    });
   };
 
   render() {
+    var borderTop
+    const borderLBR = "1px solid"
     const { comment, favorite, upvote } = this.state;
-    const { post } = this.props;
-    //console.log(Date.parse(post.dateCreated))
+    const { post, index } = this.props;
     const color = indigo[300];
-    //console.log(post.liked)
     const dateCreated = `${post.dateCreated.getDate()} ${
       monthName[post.dateCreated.getMonth()]
     } ${post.dateCreated.getFullYear()}`;
+    if (index === 0) {
+      borderTop = borderLBR
+    } else {
+      borderTop = "0px"
+    }
     return (
-      <Container>
-        <Grid container justify="center">
-          <Grid item>
-            <Card
-              style={{
-                maxWidth: "90vw",
-                width: "750px",
-                marginTop: "10px",
-                minWidth: "200px",
-                backgroundColor: color,
-              }}
-            >
-              <Link
-                component={RouterLink}
-                to={`/user/${post.authorName}/post/${post._id}`}
-                underline="none"
-              >
-                <Container style={{ padding: "0" }}>
-                  <CardHeader
-                    avatar={<Avatar src={post.avatar}></Avatar>}
-                    title={
-                      <Typography
-                        variant="h5"
-                        component="h5"
-                        style={{ color: "black" }}
-                      >
-                        {post.topic}
-                      </Typography>
-                    }
-                    subheader={
-                      <Typography component="h6" style={{ color: "black" }}>
-                        {`@${post.authorName}`}
-                        {`\t${dateCreated}`}
-                      </Typography>
-                    }
-                    action={
-                      <IconButton>
-                        <MoreVertIcon></MoreVertIcon>
-                      </IconButton>
-                    }
-                  ></CardHeader>
-                  <CardContent>
-                    <Typography
-                      style={{ color: "black" }}
-                    >{`${post.content.slice(0, 465)}`}</Typography>
-                  </CardContent>
-                </Container>
-              </Link>
-              <CardActions>
-                <LikeButton
-                  status={favorite}
-                  handleFavoriteClick={this.handleFavoriteClick}
-                />
-                <CommentButton
-                  status={comment}
-                  handleCommentClick={this.handleCommentClick}
-                />
-                <UpvoteButton
-                  status={upvote}
-                  handleUpvoteClick={this.handleUpvoteClick}
-                />
-              </CardActions>
-              <CommentCollapse status={comment} to={post._id} ></CommentCollapse>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
+      <Paper square variant="outlined" style={{ borderBottom: borderLBR, borderTop: borderTop, borderLeft: borderLBR, borderRight: borderLBR }}>
+        <Card>
+          <Link
+            component={RouterLink}
+            to={`/user/${post.authorName}/post/${post._id}`}
+            underline="none"
+          >
+            <Container style={{ padding: "0" }}>
+              <CardHeader
+                avatar={<Avatar src={post.avatar}></Avatar>}
+                title={
+                  <Typography
+                    variant="h5"
+                    component="h5"
+                    style={{ color: "black" }}
+                  >
+                    {post.topic}
+                  </Typography>
+                }
+                subheader={
+                  <Typography component="h6" style={{ color: "black" }}>
+                    {`@${post.authorName}`}
+                    {`\t${dateCreated}`}
+                  </Typography>
+                }
+                action={
+                  <IconButton>
+                    <MoreVertIcon></MoreVertIcon>
+                  </IconButton>
+                }
+              ></CardHeader>
+              <CardContent>
+                <Typography style={{ color: "black" }}>{`${post.content.slice(
+                  0,
+                  465
+                )}`}</Typography>
+              </CardContent>
+            </Container>
+          </Link>
+          <CardActions>
+            <LikeButton
+              status={favorite}
+              handleFavoriteClick={this.handleFavoriteClick}
+            />
+            <CommentButton
+              status={comment}
+              handleCommentClick={this.handleCommentClick}
+            />
+            <UpvoteButton
+              status={upvote}
+              handleUpvoteClick={this.handleUpvoteClick}
+            />
+          </CardActions>
+          <CommentCollapse status={comment} to={post._id}></CommentCollapse>
+        </Card>
+      </Paper>
     );
   }
 }

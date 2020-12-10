@@ -15,6 +15,7 @@ import {
   ClickAwayListener,
   Paper,
   MenuList,
+  Toolbar,
 } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { lightBlue } from "@material-ui/core/colors";
@@ -73,53 +74,59 @@ export default class TabApp extends React.Component {
       <div>
         <AppBar
           position="fixed"
-          style={{ color: "black", backgroundColor: "white" }}
+          style={{
+            color: "black",
+            backgroundColor: "white",
+            height: '70px'
+          }}
         >
-          <Grid
-            container
-            justify="space-around"
-            alignItems="center"
-            direction="row"
-          >
-            <Grid>
-              <img
-                src={CPEImage}
-                style={{ maxHeight: "9vh" }}
-                onClick={this.handleCPEButtonClick}
-              />
+          <Toolbar>
+            <Grid
+              container
+              justify="space-around"
+              alignItems="center"
+              direction="row"
+            >
+              <Grid item>
+                <img
+                  src={CPEImage}
+                  style={{ maxHeight: "70px" }}
+                  onClick={this.handleCPEButtonClick}
+                />
+              </Grid>
+              <Grid>
+                <Button
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  style={{ borderRadius: 20, textTransform: "none" }}
+                  variant="text"
+                  color="secondary"
+                  startIcon={<Avatar src={avatar}></Avatar>}
+                  onClick={this.handleProfileMenuClick}
+                >
+                  {username}
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={this.state.menu}
+                  keepMounted
+                  open={Boolean(this.state.menu)}
+                  onClose={this.handleProfileMenuClose}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                  transformOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                  <MenuItem onClick={this.handleProfileButtonClick}>
+                    Profile
+                  </MenuItem>
+                  <MenuItem>My account</MenuItem>
+                  <MenuItem onClick={this.handleLogOutButtonClick}>
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </Grid>
             </Grid>
-            <Grid>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                style={{ borderRadius: 20, textTransform: "none" }}
-                variant="text"
-                color="secondary"
-                startIcon={<Avatar src={avatar}></Avatar>}
-                onClick={this.handleProfileMenuClick}
-              >
-                {username}
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={this.state.menu}
-                keepMounted
-                open={Boolean(this.state.menu)}
-                onClose={this.handleProfileMenuClose}
-                getContentAnchorEl={null}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                transformOrigin={{ vertical: "top", horizontal: "center" }}
-              >
-                <MenuItem onClick={this.handleProfileButtonClick}>
-                  Profile
-                </MenuItem>
-                <MenuItem>My account</MenuItem>
-                <MenuItem onClick={this.handleLogOutButtonClick}>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </Grid>
-          </Grid>
+          </Toolbar>
         </AppBar>
       </div>
     );

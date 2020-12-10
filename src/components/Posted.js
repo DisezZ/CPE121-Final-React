@@ -29,7 +29,7 @@ export default class Posted extends React.Component {
         <Card
           style={{
             maxWidth: "90vw",
-            width: "750px",
+            width: "1200px",
             marginTop: "10px",
             minWidth: "200px",
             backgroundColor: color,

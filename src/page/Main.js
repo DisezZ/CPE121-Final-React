@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 import Axios from "axios";
 import { BaseURL } from "../defaults.json";
 import PostList from "../components/PostsList";
-import PostForm from "../components/PostForm";
+import LoadingPage from "../components/LoadingPage";
 import TagsList from "../components/TagsList"
 import AppBar from "../components/AppBar";
 import { Button, Paper, Grid, Drawer } from "@material-ui/core";
@@ -13,6 +13,7 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loaded: false,
       posts: [],
       filter: {
         mainTag: [],
@@ -42,6 +43,7 @@ export default class Main extends React.Component {
       }
       this.setState({
         posts: res.data,
+        loaded: true
       });
       //console.log("Hello")
     });
@@ -49,20 +51,26 @@ export default class Main extends React.Component {
   };
 
   render() {
-    return (
-      <div style={{ backgroundColor: "blueviolet", minHeight: "100vh" }}>
-        <AppBar></AppBar>
-        <Grid container justify="center" style={{ paddingTop: "10vh" }}>
-          <Grid item >
-            <PostList posts={this.state.posts}></PostList>
+    if (!this.state.loaded) {
+      return (
+        <LoadingPage></LoadingPage>
+      )
+    } else {
+      return (
+        <div style={{ backgroundColor: "blueviolet", minHeight: "100vh" }}>
+          <AppBar {...this.props}></AppBar>
+          <Grid container justify="center" style={{ paddingTop: "10vh" }}>
+            <Grid item >
+              <PostList posts={this.state.posts}></PostList>
+            </Grid>
+            <Grid container item lg={2} justify="center" alignItems="flex-start" direction="row" style={{marginLeft:'5vw'}}>
+              <Paper style={{height: '100vh'}}>
+              <TagsList></TagsList>
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid container item lg={2} justify="center" alignItems="flex-start" direction="row" style={{marginLeft:'5vw'}}>
-            <Paper style={{height: '100vh'}}>
-            <TagsList></TagsList>
-            </Paper>
-          </Grid>
-        </Grid>
-      </div>
-    );
+        </div>
+      );
+    }
   }
 }

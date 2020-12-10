@@ -7,6 +7,7 @@ import {BaseURL} from './defaults.json'
 import PostsList from "./components/PostsList";
 import Welcome from "./page/Welcome";
 import Redirect from "./components/Redirect";
+import LoadingPage from "./components/LoadingPage"
 import Login from './page/Login'
 import Signup from './page/Signup'
 import Main from './page/Main'
@@ -18,6 +19,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       loggedInStatus: undefined,
+      userInfo: null
     };
   }
 
@@ -34,7 +36,10 @@ class App extends React.Component {
         if (res.data.error) {
           this.setState({ loggedInStatus: false })
         } else {
-          this.setState({ loggedInStatus: true })
+          this.setState({
+            loggedInStatus: true,
+            userInfo: res.data.userInfo
+          })
         }
       })
     } else {
@@ -50,23 +55,24 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              render={(props) => <Main {...props}></Main>}
+              render={(props) => <Main {...props} userInfo={this.state.userInfo} ></Main>}
             ></Route>
             <Route
               exact
               path="/login"
-              render={(props) => <Redirect path='/' {...props}></Redirect>}
+              render={(props) => <Redirect path='/' ></Redirect>}
             ></Route>
             <Route 
               exact 
               path="/signup"
-              render={(props) => <Redirect path='/' {...props}></Redirect>}
+              render={(props) => <Redirect path='/' ></Redirect>}
             >
             </Route>
             <Route exact path="/user/:username">
               <div>user</div>
             </Route>
-            <Route exact path="/user/:username/post/:id" component={Post} />
+            <Route exact path="/user/:username/post/:id" render={(props) => <Post {...props} {...props} userInfo={this.state.userInfo} ></Post>} >
+            </Route>
           </Switch>
         </Router>
       </div>
@@ -116,7 +122,7 @@ class App extends React.Component {
       return rendered;
     } else if (this.state.loggedInStatus == undefined) {
       return (
-        <div>Loading...</div>
+        <LoadingPage></LoadingPage>
       )
     }
   }

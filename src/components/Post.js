@@ -76,7 +76,7 @@ export default class Post extends React.Component {
     const { post } = this.props;
     //console.log(Date.parse(post.dateCreated))
     const color = indigo[300];
-    //console.log(post)
+    console.log(post.liked)
     const dateCreated = `${post.dateCreated.getDate()} ${
       monthName[post.dateCreated.getMonth()]
     } ${post.dateCreated.getFullYear()}`;

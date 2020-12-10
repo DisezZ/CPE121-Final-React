@@ -33,6 +33,10 @@ export default class TabApp extends React.Component {
     window.location.reload();
   };
 
+  handleProfileButtonClick = () => {
+    this.props.history.push(`/user/${this.props.userInfo.username}`)
+  }
+
   handleCPEButtonClick = () => {
     window.location.reload();
   };
@@ -60,6 +64,7 @@ export default class TabApp extends React.Component {
   };
 
   render() {
+    const { avatar, username } = this.props.userInfo
     return (
       <div>
         <AppBar
@@ -86,10 +91,10 @@ export default class TabApp extends React.Component {
                 style={{ borderRadius: 20, textTransform: "none" }}
                 variant="text"
                 color="secondary"
-                startIcon={<Avatar></Avatar>}
+                startIcon={<Avatar src={avatar} ></Avatar>}
                 onClick={this.handleProfileMenuClick}
               >
-                Username
+                {username}
               </Button>
               <Popper
                 id={Boolean(this.state.menu) ? "simple-popper" : undefined}
@@ -107,7 +112,7 @@ export default class TabApp extends React.Component {
                       id="menu-list-grow"
                       onKeyDown={this.handleListKeyDown}
                     >
-                      <MenuItem onClick={this.handleProfileMenuClose}>
+                      <MenuItem onClick={this.handleProfileButtonClick}>
                         Profile
                       </MenuItem>
                       <MenuItem onClick={this.handleProfileMenuClose}>

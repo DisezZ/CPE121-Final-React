@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { lightBlue } from "@material-ui/core/colors";
-import CPEImage from "../image/AlternativeLogo.png"
+import CPEImage from "../image/AlternativeLogo.png";
 
 export default class TabApp extends React.Component {
   constructor(props) {
@@ -34,22 +34,26 @@ export default class TabApp extends React.Component {
   };
 
   handleProfileButtonClick = () => {
-    this.props.history.push(`/user/${this.props.userInfo.username}`)
-  }
+    this.props.history.push(`/user/${this.props.userInfo.username}`);
+  };
 
   handleCPEButtonClick = () => {
     window.location.reload();
   };
 
   handleProfileMenuClick = async (event) => {
-    await this.setState({
-      menu: this.state.menu ? null : event.currentTarget,
-    });
-    console.log(this.state.menu);
+    await this.setState(
+      {
+        menu: this.state.menu ? null : event.currentTarget,
+      },
+      () => {
+        console.log(this.state.menu);
+      }
+    );
   };
 
-  handleProfileMenuClose = () => {
-    this.setState({
+  handleProfileMenuClose = async () => {
+    await this.setState({
       menu: null,
     });
   };
@@ -64,7 +68,7 @@ export default class TabApp extends React.Component {
   };
 
   render() {
-    const { avatar, username } = this.props.userInfo
+    const { avatar, username } = this.props.userInfo;
     return (
       <div>
         <AppBar
@@ -91,40 +95,29 @@ export default class TabApp extends React.Component {
                 style={{ borderRadius: 20, textTransform: "none" }}
                 variant="text"
                 color="secondary"
-                startIcon={<Avatar src={avatar} ></Avatar>}
+                startIcon={<Avatar src={avatar}></Avatar>}
                 onClick={this.handleProfileMenuClick}
               >
                 {username}
               </Button>
-              <Popper
-                id={Boolean(this.state.menu) ? "simple-popper" : undefined}
-                open={Boolean(this.state.menu)}
+              <Menu
+                id="simple-menu"
                 anchorEl={this.state.menu}
-                role={undefined}
-                transition
-                disablePortal
+                keepMounted
+                open={Boolean(this.state.menu)}
+                onClose={this.handleProfileMenuClose}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
               >
-                <Paper>
-                  <ClickAwayListener onClickAway={this.handleProfileMenuClose}>
-                    <MenuList
-                      style={{ color: "black", background: '' }}
-                      autoFocusItem={Boolean(this.state.menu)}
-                      id="menu-list-grow"
-                      onKeyDown={this.handleListKeyDown}
-                    >
-                      <MenuItem onClick={this.handleProfileButtonClick}>
-                        Profile
-                      </MenuItem>
-                      <MenuItem onClick={this.handleProfileMenuClose}>
-                        My account
-                      </MenuItem>
-                      <MenuItem onClick={this.handleLogOutButtonClick}>
-                        Logout
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Popper>
+                <MenuItem onClick={this.handleProfileButtonClick}>
+                  Profile
+                </MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem onClick={this.handleLogOutButtonClick}>
+                  Logout
+                </MenuItem>
+              </Menu>
             </Grid>
           </Grid>
         </AppBar>

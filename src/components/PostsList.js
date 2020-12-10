@@ -19,8 +19,8 @@ export default class PostsList extends React.Component {
     console.log(posts)
     return (
       <Grid>
-        {posts.map((post, i) => {
-          return <Post key={i} post={post} />;
+        {posts.map((post, index) => {
+          return <Post index={index} key={index} post={post} {...this.props} />;
         })}
       </Grid>
     );

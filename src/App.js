@@ -60,12 +60,12 @@ class App extends React.Component {
             <Route
               exact
               path="/login"
-              render={(props) => <Redirect path='/' ></Redirect>}
+              render={(props) => <Redirect path='/' {...props} ></Redirect>}
             ></Route>
             <Route 
               exact 
               path="/signup"
-              render={(props) => <Redirect path='/' ></Redirect>}
+              render={(props) => <Redirect path='/' {...props}></Redirect>}
             >
             </Route>
             <Route exact path="/user/:username">

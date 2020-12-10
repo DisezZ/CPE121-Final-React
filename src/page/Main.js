@@ -61,7 +61,7 @@ export default class Main extends React.Component {
           <AppBar {...this.props}></AppBar>
           <Grid container justify="center" style={{ paddingTop: "10vh" }}>
             <Grid item >
-              <PostList posts={this.state.posts}></PostList>
+              <PostList posts={this.state.posts} {...this.props} ></PostList>
             </Grid>
             <Grid container item lg={2} justify="center" alignItems="flex-start" direction="row" style={{marginLeft:'5vw'}}>
               <Paper style={{height: '100vh'}}>

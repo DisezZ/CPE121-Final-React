@@ -1,4 +1,7 @@
 import React from "react";
+import Axios from "axios"
+import Cookie from 'js-cookie'
+import { BaseURL } from "../defaults.json"
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -59,8 +62,35 @@ export default class Post extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { post, userInfo } = this.props
+    const { liked, upvoted } = post
+    liked.forEach((likedBy) => {
+      if (likedBy.userID === userInfo._id) {
+        this.setState({ favorite: true })
+      }
+    })
+    upvoted.forEach((upvotedBy) => {
+      if (upvotedBy.userID === userInfo._id) {
+        this.setState({ upvote: true })     
+      }
+    })
+  }
+
   handleFavoriteClick = async () => {
-    await this.setState({ favorite: !this.state.favorite });
+    const { post } = this.props
+    const token = Cookie.get("token")
+    const to = post._id
+    var data = {
+      token: token,
+      to: to,
+      action: "like"
+    }
+    Axios.post(BaseURL+'/postAction/',data).then((res) => {
+      if(res.data.value) {
+        this.setState({ favorite: !this.state.favorite })
+      }
+    })
   };
 
   handleCommentClick = async () => {
@@ -68,7 +98,19 @@ export default class Post extends React.Component {
   };
 
   handleUpvoteClick = async () => {
-    await this.setState({ upvote: !this.state.upvote });
+    const { post } = this.props
+    const token = Cookie.get("token")
+    const to = post._id
+    var data = {
+      token: token,
+      to: to,
+      action: "upvote"
+    }
+    Axios.post(BaseURL+'/postAction/',data).then(async (res) => {
+      if(res.data.value) {
+        await this.setState({ upvote: !this.state.upvote })
+      }
+    })
   };
 
   render() {
@@ -76,7 +118,7 @@ export default class Post extends React.Component {
     const { post } = this.props;
     //console.log(Date.parse(post.dateCreated))
     const color = indigo[300];
-    console.log(post.liked)
+    //console.log(post.liked)
     const dateCreated = `${post.dateCreated.getDate()} ${
       monthName[post.dateCreated.getMonth()]
     } ${post.dateCreated.getFullYear()}`;
@@ -143,7 +185,7 @@ export default class Post extends React.Component {
                   handleUpvoteClick={this.handleUpvoteClick}
                 />
               </CardActions>
-              <CommentCollapse status={comment}></CommentCollapse>
+              <CommentCollapse status={comment} to={post._id} ></CommentCollapse>
             </Card>
           </Grid>
         </Grid>

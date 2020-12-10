@@ -30,13 +30,14 @@ export default class CommentCollapse extends React.Component {
   };
 
   onTypeComment = (event) => {
-    //console.log(event.target.value)
+    console.log(event.target.value)
     this.setState({
       content: event.target.value
     })
   }
 
   handleSendButtonClick = () => {
+    console.log(this.props.to)
     const token = Cookie.get("token")
     const data = {
       token: token,

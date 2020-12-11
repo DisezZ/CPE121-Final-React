@@ -12,14 +12,11 @@ export default class TagsList extends React.Component {
     }
 
     render() {
+        var tags = this.props.tags
         return (
-            <Grid item>
-                {
-                    mainTag.map((data, i) => {
-                        return <Tag key={i} tag={data} />
-                    })
-                }
-            </Grid>
+            tags.map((data, i) => {
+                return <Tag key={i} tag={data} />
+            })
         )
     }
 }

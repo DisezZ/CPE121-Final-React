@@ -13,6 +13,8 @@ import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import Hidden from "@material-ui/core/Hidden";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
@@ -59,12 +61,13 @@ export default class Post extends React.Component {
       comment: false,
       upvote: false,
       favorite: false,
+      subTag: "",
     };
   }
 
   componentDidMount() {
     const { post, userInfo } = this.props;
-    const { liked, upvoted } = post;
+    const { liked, upvoted, subTag } = post;
     liked.forEach((likedBy) => {
       if (likedBy.userID === userInfo._id) {
         this.setState({ favorite: true });
@@ -74,6 +77,11 @@ export default class Post extends React.Component {
       if (upvotedBy.userID === userInfo._id) {
         this.setState({ upvote: true });
       }
+    });
+    subTag.map((tag) => {
+      this.setState({
+        subTag: (this.state.subTag += ` #${tag}`),
+      });
     });
   }
 
@@ -114,22 +122,113 @@ export default class Post extends React.Component {
   };
 
   render() {
-    var borderTop
-    const borderLBR = "1px solid"
+    const color = grey[200];
+    var subTag = this.state.subTag;
+    var borderTop;
+    const borderLBR = "1px solid";
     const { comment, favorite, upvote } = this.state;
     const { post, index } = this.props;
-    const color = indigo[300];
     const dateCreated = `${post.dateCreated.getDate()} ${
       monthName[post.dateCreated.getMonth()]
     } ${post.dateCreated.getFullYear()}`;
     if (index === 0) {
-      borderTop = borderLBR
+      borderTop = borderLBR;
     } else {
-      borderTop = "0px"
+      borderTop = "0px";
     }
     return (
-      <Paper square variant="outlined" style={{ borderBottom: borderLBR, borderTop: borderTop, borderLeft: borderLBR, borderRight: borderLBR }}>
-        <Card>
+      <Grid item xs={12}>
+        <Button
+          href={`/user/${post.authorName}/post/${post._id}`}
+          variant="outlined"
+          style={{
+            width: "100%",
+            textTransform: "none",
+            backgroundColor: color,
+            borderBottom: borderLBR,
+            borderTop: borderTop,
+            borderLeft: borderLBR,
+            borderRight: borderLBR,
+            borderRadius: 0,
+          }}
+        >
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justify="space-evenly"
+            style={{ padding: "15px" }}
+          >
+            <Grid item xs={2} md={1}>
+              <div>
+                <Grid container direction="column" alignItems="center">
+                  <Avatar alt="src" src={post.avatar} />
+                </Grid>
+              </div>
+            </Grid>
+            <Grid item xs={9} md={7}>
+              <div>
+                <Grid
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="flex-start"
+                >
+                  <Grid item>
+                    <Typography>{post.topic}</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>{`#${post.mainTag} |${subTag}`}</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>{`Post by ${post.authorName}`}</Typography>
+                  </Grid>
+                </Grid>
+              </div>
+            </Grid>
+            <Grid item xs={3} md={1}>
+              <div>
+                <Grid container direction="column" alignItems="center">
+                  <Typography>Voted</Typography>
+                  <Typography>{post.upvoted.length}</Typography>
+                </Grid>
+              </div>
+            </Grid>
+            <Grid item xs={3} md={1}>
+              <div>
+                <Grid container direction="column" alignItems="center">
+                  <Typography>Replied</Typography>
+                  <Typography>{post.comment.length}</Typography>
+                </Grid>
+              </div>
+            </Grid>
+            <Grid item xs={3} md={2}>
+              <div>
+                <Grid container direction="column" alignItems="center">
+                  <Typography>{`${post.dateCreated.getDate()}/${post.dateCreated.getMonth()}/${post.dateCreated.getFullYear()}`}</Typography>
+                  <Typography>{`${
+                    post.dateCreated.getHours() < 10
+                      ? `0${post.dateCreated.getHours()}`
+                      : post.dateCreated.getHours()
+                  }:${
+                    post.dateCreated.getMinutes() < 10
+                      ? `0${post.dateCreated.getMinutes()}`
+                      : post.dateCreated.getMinutes()
+                  }`}</Typography>
+                </Grid>
+              </div>
+            </Grid>
+          </Grid>
+        </Button>
+      </Grid>
+    );
+  }
+}
+
+{
+  /*
+  <Paper square variant="outlined" style={{ borderBottom: borderLBR, borderTop: borderTop, borderLeft: borderLBR, borderRight: borderLBR }}>
+        <Card style={{border: 0, borderRadius: 0}}>
           <Link
             component={RouterLink}
             to={`/user/${post.authorName}/post/${post._id}`}
@@ -183,7 +282,5 @@ export default class Post extends React.Component {
           </CardActions>
           <CommentCollapse status={comment} to={post._id}></CommentCollapse>
         </Card>
-      </Paper>
-    );
-  }
+      </Paper>*/
 }

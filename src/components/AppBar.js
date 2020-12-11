@@ -77,17 +77,85 @@ export default class TabApp extends React.Component {
           style={{
             color: "black",
             backgroundColor: "white",
-            height: '70px'
+            height: "70px",
           }}
         >
           <Toolbar>
             <Grid
               container
-              justify="space-around"
+              justify="center"
+              direction="column"
               alignItems="center"
-              direction="row"
             >
-              <Grid item>
+              <Grid item xs={12} lg={10} style={{ width: "100%" }}>
+                <div>
+                  <Grid
+                    container
+                    justify="space-between"
+                    alignItems="center"
+                    direction="row"
+                  >
+                    <img
+                      src={CPEImage}
+                      style={{ maxHeight: "70px" }}
+                      onClick={this.handleCPEButtonClick}
+                    />
+                    <Grid item>
+                      <div>
+                        <Button
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          style={{ borderRadius: 20, textTransform: "none" }}
+                          variant="text"
+                          color="secondary"
+                          startIcon={<Avatar src={avatar}></Avatar>}
+                          onClick={this.handleProfileMenuClick}
+                        >
+                          {username}
+                        </Button>
+                        <Hidden lgUp>
+                          <Button>Tags</Button>
+                        </Hidden>
+                        <Menu
+                          id="simple-menu"
+                          anchorEl={this.state.menu}
+                          keepMounted
+                          open={Boolean(this.state.menu)}
+                          onClose={this.handleProfileMenuClose}
+                          getContentAnchorEl={null}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                          }}
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "center",
+                          }}
+                        >
+                          <MenuItem onClick={this.handleProfileButtonClick}>
+                            Profile
+                          </MenuItem>
+                          <MenuItem>My account</MenuItem>
+                          <MenuItem onClick={this.handleLogOutButtonClick}>
+                            Logout
+                          </MenuItem>
+                        </Menu>
+                      </div>
+                    </Grid>
+                  </Grid>
+                </div>
+              </Grid>
+            </Grid>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
+
+{
+  /*
+  <Grid item>
                 <img
                   src={CPEImage}
                   style={{ maxHeight: "70px" }}
@@ -124,11 +192,5 @@ export default class TabApp extends React.Component {
                     Logout
                   </MenuItem>
                 </Menu>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  }
+              </Grid>*/
 }

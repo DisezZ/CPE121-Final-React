@@ -15,16 +15,11 @@ export default class PostsList extends React.Component {
     const comments = this.props.comments;
     //console.log(comments)
     return (
-      <Card style={{backgroundColor: 'black'}} >
-          <Typography>
-              Comments:
-          </Typography>
-        <Grid container spacing={2} direction="column" >
+      <Grid container spacing={2} direction="column" alignItems="stretch" >
           {comments.map((comment, i) => {
             return <Comment index={i} key={i} comment={comment} />;
           })}
         </Grid>
-      </Card>
     );
   }
 }

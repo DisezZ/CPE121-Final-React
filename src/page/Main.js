@@ -5,8 +5,8 @@ import { BaseURL, Notice } from "../defaults.json";
 import { mainTag, subTag } from "../tags.json";
 import PostList from "../components/PostsList";
 import LoadingPage from "../components/LoadingPage";
-import TagsList from "../components/TagsList";
 import AppBar from "../components/AppBar";
+import NavBar from "../components/NavBar";
 import {
   Button,
   Paper,
@@ -15,6 +15,9 @@ import {
   Typography,
   Avatar,
   TextField,
+  FormControlLabel,
+  Checkbox,
+  TabPanel,
 } from "@material-ui/core";
 import SortIcon from "@material-ui/icons/Sort";
 import { grey } from "@material-ui/core/colors";
@@ -29,11 +32,52 @@ export default class Main extends React.Component {
         mainTag: [],
         subTag: [],
       },
+      mainTag: mainTag.map(() => {
+        return false;
+      }),
+      subTag: subTag.map(() => {
+        return false;
+      }),
+      searchSubTag: "",
     };
   }
 
   componentDidMount() {
     this.postRequest();
+  }
+
+  handleMainTagStatus = (index) => {
+    var items = this.state.mainTag
+    items[index] = !items[index]
+    this.setState({
+      mainTag: items
+    },() => {
+      console.log(this.state.mainTag)
+    })
+  };
+
+  handleSubTagStatus = (index) => {
+    var items = this.state.subTag
+    items[index] = !items[index]
+    this.setState({
+      subTag: items
+    },() => {
+      console.log(this.state.subTag)
+    })
+  };
+
+  handleSubTagSearchType = (event) => {
+    this.setState({
+      searchSubTag: event.target.value,
+    }, () => {
+      //console.log(this.state.searchSubTag)
+    });
+  };
+
+  handleSubTagSearchToBlank = () => {
+    this.setState({
+      searchSubTag: "",
+    });
   }
 
   postRequest = async () => {
@@ -55,9 +99,7 @@ export default class Main extends React.Component {
         posts: res.data,
         loaded: true,
       });
-      //console.log("Hello")
     });
-    console.log(this.state.posts);
   };
 
   handlePostPageClick = () => {
@@ -66,27 +108,11 @@ export default class Main extends React.Component {
     }, 1000);
   };
 
-  mainTagButtonList = (xs) => {
-    return mainTag.map((tag) => {
-      return (
-        <Grid item xs={xs}>
-          <Button
-            style={{
-              width: "100%",
-              borderRadius: "20px",
-              textTransform: "none",
-            }}
-          >
-            {tag}
-          </Button>
-        </Grid>
-      );
-    });
-  };
-
   render() {
-    var mainTagButton = this.mainTagButtonList();
-    const color = grey[200];
+    const search = this.state.searchSubTag;
+    const mainTagList = this.state.mainTag;
+    const subTagList = this.state.subTag;
+    const color = grey[300];
     if (!this.state.loaded) {
       return <LoadingPage></LoadingPage>;
     } else {
@@ -94,7 +120,7 @@ export default class Main extends React.Component {
         <div
           style={{
             backgroundColor: "lightblue",
-            minHeight: "60vh",
+            minHeight: "100vh",
             flexGrow: 1,
           }}
         >
@@ -129,7 +155,7 @@ export default class Main extends React.Component {
                               alignItems="stretch"
                             >
                               <Grid item xs={6} style={{ height: "100%" }}>
-                                <Paper square style={{ height: "100%" }}>
+                                <Paper square style={{ height: "100%", padding: "15px" }}>
                                   <Typography variant="h6">Notice:</Typography>
                                   <Typography>{Notice}</Typography>
                                 </Paper>
@@ -140,7 +166,7 @@ export default class Main extends React.Component {
                                     <Grid
                                       container
                                       alignItems="center"
-                                      style={{ width: "100%" }}
+                                      style={{ width: "100%", height: "100%" }}
                                     >
                                       <Grid item>
                                         <Avatar
@@ -163,6 +189,7 @@ export default class Main extends React.Component {
                                           name="post"
                                           type="text"
                                           placeholder="Post"
+                                          autoComplete="off"
                                           onClick={this.handlePostPageClick}
                                         ></TextField>
                                       </Grid>
@@ -203,35 +230,15 @@ export default class Main extends React.Component {
                 </Grid>
                 <Grid container item xs={0} lg={3} direction="column">
                   <Grid item>
-                    <Hidden mdDown>
-                      <Paper
-                        square
-                        style={{
-                          width: "300px",
-                          height: "100%",
-                          position: "fixed",
-                          padding: "15px",
-                        }}
-                      >
-                        <Grid container direction="column">
-                          <Typography>Main Tags :</Typography>
-                          <Paper
-                            square
-                            variant="outlined"
-                            style={{
-                              padding: "15px",
-                              backgroundColor: color,
-                              border: 0,
-                            }}
-                          >
-                            <Grid container spacing={1}>
-                              <TagsList tags={mainTag}></TagsList>
-                            </Grid>
-                          </Paper>
-                          <Typography>Sub Tags :</Typography>
-                        </Grid>
-                      </Paper>
-                    </Hidden>
+                    <NavBar
+                      search={search}
+                      mainTagList={mainTagList}
+                      subTagList={subTagList}
+                      handleSearchType={this.handleSubTagSearchType}
+                      handleMainTagStatus={this.handleMainTagStatus}
+                      handleSubTagStatus={this.handleSubTagStatus}
+                      handleSearchToBlank={this.handleSubTagSearchToBlank}
+                    ></NavBar>
                   </Grid>
                 </Grid>
               </Grid>

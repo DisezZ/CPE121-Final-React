@@ -1,4 +1,5 @@
 import React from "react";
+import replyImage from "../image/mail-reply-480.png";
 import {
   Grid,
   Card,
@@ -6,9 +7,11 @@ import {
   CardHeader,
   Avatar,
   Container,
-  Link
+  Link,
+  Typography,
 } from "@material-ui/core";
-import green from '@material-ui/core/colors/green'
+import green from "@material-ui/core/colors/green";
+import Bubble from "../image/Bubble.svg";
 
 export default class Comment extends React.Component {
   constructor(props) {
@@ -18,24 +21,23 @@ export default class Comment extends React.Component {
 
   render() {
     const { index, comment } = this.props;
-    const color = green[300]
+    const color = green[300];
     return (
-      <Grid item style={{marginLeft: '100px'}} >
+      <Grid item style={{ marginLeft: "100px" }}>
         <Card
           style={{
-            maxWidth: "60vw",
-            width: "650px",
+            width: "100%",
             marginTop: "10px",
             minWidth: "200px",
-            backgroundColor: color,
+            backgroundColor: "white",
           }}
         >
           <CardHeader
             avatar={<Avatar src={comment.avatar} />}
             title={
-                <Link href={`/user/${comment.authorName}`}>
-                    {`@${comment.authorName}`}
-                </Link>
+              <Link href={`/user/${comment.authorName}`}>
+                {`@${comment.authorName}`}
+              </Link>
             }
             subheader={comment.dateCreated}
           ></CardHeader>

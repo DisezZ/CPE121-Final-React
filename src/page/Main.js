@@ -46,12 +46,36 @@ export default class Main extends React.Component {
     this.postRequest();
   }
 
+  handleTagSelectedChanged = async () => {
+    var main = []
+    var sub = []
+    await this.state.mainTag.forEach((tag, index) => {
+      if (tag === true) {
+        main.push(mainTag[index])
+      }
+    })
+    await this.state.subTag.forEach((tag, index) => {
+      if (tag === true) {
+        sub.push(subTag[index])
+      }
+    })
+    this.setState({
+      filter: {
+        mainTag: main,
+        subTag: sub
+      }
+    }, () => {
+      this.postRequest()
+    })
+  }
+
   handleMainTagStatus = (index) => {
     var items = this.state.mainTag
     items[index] = !items[index]
     this.setState({
       mainTag: items
     },() => {
+      this.handleTagSelectedChanged()
       console.log(this.state.mainTag)
     })
   };
@@ -62,6 +86,7 @@ export default class Main extends React.Component {
     this.setState({
       subTag: items
     },() => {
+      this.handleTagSelectedChanged()
       console.log(this.state.subTag)
     })
   };

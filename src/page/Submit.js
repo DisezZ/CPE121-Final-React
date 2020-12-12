@@ -1,5 +1,6 @@
 import React from "react";
 import AppBar from "../components/AppBar";
+import NavBar from "../components/NavBar";
 import {
   Grid,
   Paper,
@@ -46,18 +47,18 @@ export default class Submit extends React.Component {
                   <Grid
                     container
                     direction="row"
-                    spacing="2"
+                    spacing={3}
                     alignItems="center"
                     justify="space-between"
                   >
-                    <Grid item>
+                    <Grid item xs={3}>
                       <Typography component="h1" variant="h5">
                         Created Post :
                       </Typography>
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={6}>
                       <div>
-                        <Grid container alignItems="center">
+                        <Grid container justify="flex-end" alignItems="center" spacing={1}>
                           <Grid item>
                             <Avatar></Avatar>
                           </Grid>
@@ -72,11 +73,12 @@ export default class Submit extends React.Component {
                     <Grid container direction="column" alignItems="stretch">
                       <Grid item>
                         <div>
-                          <Grid container spacing={2} alignItems="center">
-                            <Grid item xs={8}>
+                          <Grid container spacing={2} alignItems="center" justify="center">
+                            <Grid item xs={12} lg={8}>
                               <TextField
+                                style={{ backgroundColor: "white", borderRadius: "20px", outline: "none" }}
                                 variant="outlined"
-                                margin="normal"
+                                margin="none"
                                 required
                                 fullWidth
                                 id="userInput"
@@ -86,17 +88,18 @@ export default class Submit extends React.Component {
                                 autoComplete="off"
                               />
                             </Grid>
-                            <Grid item xs={2}>
-                              <Button>MainTag</Button>
+                            <Grid item xs={4} lg={2}>
+                              <Button style={{backgroundColor: "white", width: "100%", height: "100%"}}>MainTag</Button>
                             </Grid>
-                            <Grid item xs={2}>
-                              <Button>SubTag</Button>
+                            <Grid item xs={4} lg={2}>
+                              <Button style={{backgroundColor: "white", width: "100%", height: "100%"}}>SubTag</Button>
                             </Grid>
                           </Grid>
                         </div>
                       </Grid>
                       <Grid item>
                         <TextField
+                          style={{ backgroundColor: "white" }}
                           variant="outlined"
                           margin="normal"
                           required
@@ -111,7 +114,23 @@ export default class Submit extends React.Component {
                         />
                       </Grid>
                       <Grid item>
-                        <Paper></Paper>
+                        <Paper variant="outlined" style={{borderRadius: "20px", paddingLeft: "5px"}}>
+                          <Grid container alignItems="center">
+                            <Grid item xs={1}>
+                              <Typography align="center">
+                                Selected Tag :
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid container justify="flex-end" spacing={2}>
+                        <Grid item xs={5} md={3} lg={2}>
+                          <Button style={{backgroundColor: "white", width: "100%", height: "100%", borderRadius: "20px"}}>Clear</Button>
+                        </Grid>
+                        <Grid item xs={5} md={3} lg={2}>
+                          <Button style={{backgroundColor: "white", width: "100%", height: "100%", borderRadius: "20px"}}>Post</Button>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Paper>

@@ -112,64 +112,77 @@ export default class Posts extends React.Component {
                             outline: "1px solid",
                             //marginTop: "15px",
                           }}
+                          spacing={1}
                         >
-                          <Posted
-                            {...this.props}
-                            post={post}
-                            index={0}
-                          ></Posted>
-                          <Divider
-                            style={{ marginTop: "15px", marginBottom: "15px" }}
-                          />
-                          <Typography>{post.content}</Typography>
-                          <Divider
-                            style={{ marginTop: "15px", marginBottom: "15px" }}
-                          />
-                          <Typography>Info Section</Typography>
-                          <Grid container spacing={2}>
-                            <Grid item>
-                              <div>
-                                <Grid direction="column" container>
-                                  <Grid item>
-                                    <div>
-                                      <Grid container alignItems="center">
-                                        <Grid item>
-                                          <UpvoteButton></UpvoteButton>
-                                        </Grid>
-                                        <Grid item>
-                                          <Typography>{`${post.upvoted.length} Upvoted`}</Typography>
-                                        </Grid>
+                          <Grid item>
+                            <Posted
+                              {...this.props}
+                              post={post}
+                              index={0}
+                            ></Posted>
+                          </Grid>
+                          <Grid item>
+                            <Paper
+                              square
+                              variant="outlined"
+                              style={{ padding: "15px" }}
+                            >
+                              <Typography>{post.content}</Typography>
+                            </Paper>
+                          </Grid>
+                          <Grid item>
+                            <div>
+                              <Grid container spacing={2}>
+                                <Grid item>
+                                  <div>
+                                    <Grid direction="column" container>
+                                      <Grid item>
+                                        <div>
+                                          <Grid container alignItems="center">
+                                            <Grid item>
+                                              <UpvoteButton></UpvoteButton>
+                                            </Grid>
+                                            <Grid item>
+                                              <Typography>{`${post.upvoted.length} Upvoted`}</Typography>
+                                            </Grid>
+                                          </Grid>
+                                        </div>
                                       </Grid>
-                                    </div>
-                                  </Grid>
+                                    </Grid>
+                                  </div>
                                 </Grid>
-                              </div>
-                            </Grid>
-                            <Grid item>
-                              <div>
-                                <Grid direction="column" container>
-                                  <Grid item>
-                                    <div>
-                                      <Grid container alignItems="center">
-                                        <Grid item>
-                                          <CommentButton></CommentButton>
-                                        </Grid>
-                                        <Grid item>
-                                          <Typography>{`${post.comment.length} Replies`}</Typography>
-                                        </Grid>
+                                <Grid item>
+                                  <div>
+                                    <Grid direction="column" container>
+                                      <Grid item>
+                                        <div>
+                                          <Grid container alignItems="center">
+                                            <Grid item>
+                                              <CommentButton></CommentButton>
+                                            </Grid>
+                                            <Grid item>
+                                              <Typography>{`${post.comment.length} Replies`}</Typography>
+                                            </Grid>
+                                          </Grid>
+                                        </div>
                                       </Grid>
-                                    </div>
-                                  </Grid>
+                                    </Grid>
+                                  </div>
                                 </Grid>
-                              </div>
-                            </Grid>
+                              </Grid>
+                            </div>
                           </Grid>
                         </Grid>
                       </Paper>
                     </Grid>
                     <Grid item>
                       <Paper square style={{ padding: "15px" }}>
-                        <Grid container direction="column" alignItems="stretch">
+                        <Grid
+                          container
+                          direction="column"
+                          alignItems="stretch"
+                          spacing={1}
+                        >
                           <Grid item>
                             <div>
                               <Grid container justify="space-between">
@@ -179,21 +192,37 @@ export default class Posts extends React.Component {
                                 <Grid item xs={5}>
                                   <div>
                                     <Grid
+                                      direction="column"
                                       container
                                       spacing={2}
-                                      justify="flex-end"
-                                      alignItems="center"
+                                      justify="center"
+                                      alignItems="flex-end"
                                     >
                                       <Grid item>
-                                        <Typography>Reply As :</Typography>
-                                      </Grid>
-                                      <Grid item>
-                                        <Avatar src={userInfo.avatar}></Avatar>
-                                      </Grid>
-                                      <Grid item>
-                                        <Typography>
-                                          {userInfo.username}
-                                        </Typography>
+                                        <div>
+                                          <Grid
+                                            container
+                                            justify="flex-end"
+                                            alignItems="center"
+                                            spacing={1}
+                                          >
+                                            <Grid item>
+                                              <Typography>
+                                                Reply As :
+                                              </Typography>
+                                            </Grid>
+                                            <Grid item>
+                                              <Avatar
+                                                src={userInfo.avatar}
+                                              ></Avatar>
+                                            </Grid>
+                                            <Grid item>
+                                              <Typography>
+                                                {userInfo.username}
+                                              </Typography>
+                                            </Grid>
+                                          </Grid>
+                                        </div>
                                       </Grid>
                                     </Grid>
                                   </div>

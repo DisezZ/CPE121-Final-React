@@ -9,6 +9,7 @@ import AppBar from "../components/AppBar";
 import NavBar from "../components/NavBar";
 import {
   Button,
+  Divider,
   Paper,
   Grid,
   Hidden,
@@ -153,7 +154,7 @@ export default class Main extends React.Component {
                                   style={{ height: "100%", padding: "15px" }}
                                 >
                                   <Typography variant="h6">Notice:</Typography>
-                                  <Typography>{Notice}</Typography>
+                                  <Typography variant="body2">{Notice}</Typography>
                                 </Paper>
                               </Grid>
                               <Grid item xs={6}>
@@ -198,10 +199,10 @@ export default class Main extends React.Component {
                         </Grid>
                         <Grid item>
                           <Paper square style={{ padding: "15px" }}>
-                            <Typography>Pinned Thread :</Typography>
-                            <Typography>Hot Thread :</Typography>
+                            <Typography variant="h6" >Pinned Thread :</Typography>
+                            <Typography variant="h6">Hot Thread :</Typography>
                             <Grid container justify="space-between">
-                              <Typography>Thread :</Typography>
+                              <Typography variant="h6">Thread :</Typography>
                               <Button
                                 color="default"
                                 startIcon={<SortIcon />}
@@ -238,7 +239,7 @@ export default class Main extends React.Component {
                     >
                       <Grid container direction="column" spacing={2}>
                         <Grid item>
-                          <Typography>Main Tags:</Typography>
+                          <Typography variant="h6" style={{marginTop: "10px"}}>Main Tags:</Typography>
                         </Grid>
                         <Grid item>
                           <Autocomplete
@@ -265,7 +266,10 @@ export default class Main extends React.Component {
                           />
                         </Grid>
                         <Grid item>
-                          <Typography>Sub Tags:</Typography>
+                        <Divider />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="h6" style={{marginTop: "10px"}}>Sub Tags:</Typography>
                         </Grid>
                         <Grid item>
                           <Autocomplete
@@ -291,6 +295,9 @@ export default class Main extends React.Component {
                               />
                             )}
                           />
+                        </Grid>
+                        <Grid item>
+                        <Divider />
                         </Grid>
                       </Grid>
                     </Paper>

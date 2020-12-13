@@ -29,7 +29,7 @@ export default class NavBar extends React.Component {
           }}
         >
           <Grid container direction="column">
-            <Typography style={{ marginTop:"15px" }}>Main Tags :</Typography>
+            <Typography variant="h4" style={{ marginTop:"15px" }}>Main Tags :</Typography>
             <Paper
               square
               variant="outlined"

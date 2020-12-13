@@ -1,5 +1,5 @@
 {
     "BaseURL": "https://backend-cpe-web-board.herokuapp.com",
     "URL": "http://localhost:3000",
-    "Notice":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris condimentum, quam ut ultrices vulputate."
+    "Notice":"This website is on beta testing at version 0.0.1, please reminding that any actions that have been made might disappear when it comes to major update!"
 }

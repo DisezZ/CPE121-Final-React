@@ -23,7 +23,7 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import { mainTag, subTag } from "../tags.json";
-import { grey } from "@material-ui/core/colors";
+import { grey, blue, orange } from "@material-ui/core/colors";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 
 const monthName = [
@@ -70,13 +70,13 @@ export default class Posts extends React.Component {
     await Axios.post(BaseURL + "/posted/", data).then((res) => {
       var dateCreated = new Date(res.data.post.dateCreated);
       res.data.post.dateCreated = dateCreated;
-      var newDate = []
+      var newDate = [];
       res.data.comment.forEach((data, index) => {
-        dateCreated = new Date(data.dateCreated)
-        newDate.push(dateCreated)
-      })
-      res.data.comment.dateCreated = newDate
-      console.log(newDate)
+        dateCreated = new Date(data.dateCreated);
+        newDate.push(dateCreated);
+      });
+      res.data.comment.dateCreated = newDate;
+      console.log(newDate);
       this.setState(
         {
           post: res.data.post,
@@ -84,7 +84,7 @@ export default class Posts extends React.Component {
           loaded: true,
         },
         () => {
-          console.log(10)
+          console.log(10);
           this.state.post.upvoted.map((ID) => {
             if (ID.userID === this.props.userInfo._id) {
               //console.log("find")
@@ -197,6 +197,8 @@ export default class Posts extends React.Component {
   };
 
   render() {
+    const colorBlue = blue[600]
+    const colorOrange = orange[900]
     const color = grey[300];
     const { post, comments } = this.state;
     const { userInfo } = this.props;
@@ -223,84 +225,88 @@ export default class Posts extends React.Component {
                   >
                     <Grid item>
                       <Paper square style={{ height: "100%", padding: "15px" }}>
-                        <Typography>Posts :</Typography>
-                        <Grid
-                          container
-                          direction="column"
-                          alignItems="stretch"
-                          style={{
-                            padding: "15px",
-                            outline: "1px solid",
-                            //marginTop: "15px",
-                          }}
-                          spacing={1}
-                        >
-                          <Grid item>
-                            <Posted
-                              {...this.props}
-                              post={post}
-                              index={0}
-                            ></Posted>
-                          </Grid>
-                          <Grid item>
-                            <Paper
-                              square
-                              variant="outlined"
-                              style={{ padding: "15px" }}
-                            >
-                              <Typography>{post.content}</Typography>
-                            </Paper>
-                          </Grid>
-                          <Grid item>
-                            <div>
-                              <Grid container spacing={2}>
-                                <Grid item>
-                                  <div>
-                                    <Grid direction="column" container>
-                                      <Grid item>
-                                        <div>
-                                          <Grid container alignItems="center">
-                                            <Grid item>
-                                              <UpvoteButton
-                                                status={this.state.upvoted}
-                                                handleUpvoteClick={
-                                                  this.handleUpvoteClick
-                                                }
-                                              ></UpvoteButton>
+                        <Grid item>
+                          <Typography variant="h6" style={{fontWeight: "bold"}}>Posts :</Typography>
+                        </Grid>
+                        <Grid container style={{ padding: "15px" }}>
+                          <Grid
+                            container
+                            direction="column"
+                            alignItems="stretch"
+                            style={{
+                              outline: "1px solid",
+                              //marginTop: "15px",
+                            }}
+                            spacing={1}
+                          >
+                            <Grid item>
+                              <Posted
+                                {...this.props}
+                                post={post}
+                                index={0}
+                              ></Posted>
+                            </Grid>
+                            <Grid item>
+                              <Paper
+                                square
+                                variant="outlined"
+                                style={{ padding: "15px" }}
+                              >
+                                <Typography>{post.content}</Typography>
+                              </Paper>
+                            </Grid>
+                            <Grid item>
+                              <div>
+                                <Grid container spacing={2}>
+                                  <Grid item>
+                                    <div>
+                                      <Grid direction="column" container>
+                                        <Grid item>
+                                          <div>
+                                            <Grid container alignItems="center">
+                                              <Grid item>
+                                                <UpvoteButton
+                                                  status={this.state.upvoted}
+                                                  handleUpvoteClick={
+                                                    this.handleUpvoteClick
+                                                  }
+                                                ></UpvoteButton>
+                                              </Grid>
+                                              <Grid item>
+                                                <Typography variant="body2">{`${post.upvoted.length} Upvoted`}</Typography>
+                                              </Grid>
                                             </Grid>
-                                            <Grid item>
-                                              <Typography>{`${post.upvoted.length} Upvoted`}</Typography>
-                                            </Grid>
-                                          </Grid>
-                                        </div>
+                                          </div>
+                                        </Grid>
                                       </Grid>
-                                    </Grid>
-                                  </div>
-                                </Grid>
-                                <Grid item>
-                                  <div>
-                                    <Grid direction="column" container>
-                                      <Grid item>
-                                        <div>
-                                          <Grid container alignItems="center">
-                                            <Grid item>
-                                              <CommentButton
-                                                handleCommentClick={
-                                                  this.handleCommentButtonClick
-                                                }
-                                              ></CommentButton>
+                                    </div>
+                                  </Grid>
+                                  <Grid item>
+                                    <div>
+                                      <Grid direction="column" container>
+                                        <Grid item>
+                                          <div>
+                                            <Grid container alignItems="center">
+                                              <Grid item>
+                                                <CommentButton
+                                                  handleCommentClick={
+                                                    this
+                                                      .handleCommentButtonClick
+                                                  }
+                                                ></CommentButton>
+                                              </Grid>
+                                              <Grid item>
+                                                <Typography variant="body2">{`${post.comment.length} Replies`}</Typography>
+                                              </Grid>
                                             </Grid>
-                                            <Grid item>
-                                              <Typography>{`${post.comment.length} Replies`}</Typography>
-                                            </Grid>
-                                          </Grid>
-                                        </div>
+                                          </div>
+                                        </Grid>
                                       </Grid>
-                                    </Grid>
-                                  </div>
+                                    </div>
+                                  </Grid>
                                 </Grid>
-                              </Grid>
-                            </div>
+                              </div>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Paper>
@@ -317,7 +323,7 @@ export default class Posts extends React.Component {
                             <div>
                               <Grid container justify="space-between">
                                 <Grid item xs={5}>
-                                  <Typography>Reply :</Typography>
+                                  <Typography variant="h6" style={{fontWeight: "bold"}}>Reply :</Typography>
                                 </Grid>
                                 <Grid item xs={5}>
                                   <div>
@@ -337,7 +343,7 @@ export default class Posts extends React.Component {
                                             spacing={1}
                                           >
                                             <Grid item>
-                                              <Typography>As :</Typography>
+                                              <Typography style={{fontWeight: "bold"}}>As :</Typography>
                                             </Grid>
                                             <Grid item>
                                               <Avatar
@@ -353,7 +359,7 @@ export default class Posts extends React.Component {
                                               ></Avatar>
                                             </Grid>
                                             <Grid item>
-                                              <Typography>
+                                              <Typography >
                                                 {this.state.anonymous
                                                   ? "Anonymous"
                                                   : userInfo.username}
@@ -397,8 +403,9 @@ export default class Posts extends React.Component {
                                 <Button
                                   onClick={this.handleReplyButtonClearClick}
                                   style={{
-                                    backgroundColor: "orange",
+                                    backgroundColor: colorOrange,
                                     borderRadius: "20px",
+                                    color: "white"
                                   }}
                                 >
                                   Clear
@@ -408,8 +415,9 @@ export default class Posts extends React.Component {
                                 <Button
                                   onClick={this.handleReplyButtonSendClick}
                                   style={{
-                                    backgroundColor: "lightblue",
+                                    backgroundColor: colorBlue,
                                     borderRadius: "20px",
+                                    color: "white"
                                   }}
                                 >
                                   Reply Now

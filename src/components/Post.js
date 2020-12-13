@@ -175,13 +175,13 @@ export default class Post extends React.Component {
                   alignItems="flex-start"
                 >
                   <Grid item>
-                    <Typography>{post.topic}</Typography>
+                    <Typography variant="h6" style={{fontWeight: "bold"}}>{post.topic}</Typography>
                   </Grid>
                   <Grid item>
-                    <Typography>{`#${post.mainTag} |${subTag}`}</Typography>
+                    <Typography variant="body2">{`#${post.mainTag} ||${subTag}`}</Typography>
                   </Grid>
                   <Grid item>
-                    <Typography>{`Post by ${post.authorName}`}</Typography>
+                    <Typography variant="body2">{`Post by ${post.authorName}`}</Typography>
                   </Grid>
                 </Grid>
               </div>
@@ -189,16 +189,16 @@ export default class Post extends React.Component {
             <Grid item xs={3} md={1}>
               <div>
                 <Grid container direction="column" alignItems="center">
-                  <Typography>Voted</Typography>
-                  <Typography>{post.upvoted.length}</Typography>
+                  <Typography variant="body2" style={{fontWeight: "bold"}}>Voted</Typography>
+                  <Typography variant="body2" >{post.upvoted.length}</Typography>
                 </Grid>
               </div>
             </Grid>
             <Grid item xs={3} md={1}>
               <div>
                 <Grid container direction="column" alignItems="center">
-                  <Typography>Replied</Typography>
-                  <Typography>{post.comment.length}</Typography>
+                  <Typography variant="body2" style={{fontWeight: "bold"}}>Replied</Typography>
+                  <Typography variant="body2">{post.comment.length}</Typography>
                 </Grid>
               </div>
             </Grid>
@@ -206,7 +206,7 @@ export default class Post extends React.Component {
               <div>
                 <Grid container direction="column" alignItems="center">
                   <Typography>{`${post.dateCreated.getDate()}/${post.dateCreated.getMonth()}/${post.dateCreated.getFullYear()}`}</Typography>
-                  <Typography>{`${
+                  <Typography variant="body2">{`${
                     post.dateCreated.getHours() < 10
                       ? `0${post.dateCreated.getHours()}`
                       : post.dateCreated.getHours()

@@ -52,7 +52,7 @@ export default class Posted extends React.Component {
               alignItems="flex-start"
             >
               <Grid item>
-                <Typography>{post.topic}</Typography>
+                <Typography style={{fontWeight: "bold"}}>{post.topic}</Typography>
               </Grid>
               <Grid item>
                 <Typography>{`#${post.mainTag} |${post.subTag.map((tag) => {
@@ -63,13 +63,13 @@ export default class Posted extends React.Component {
                 <div>
                   <Grid container spacing={1}>
                     <Grid item>
-                    <Typography>{`Post by `}</Typography>
+                    <Typography >{`Post by `}</Typography>
                     </Grid>
                     <Grid item>
                     <Link href={`/user/${post.authorName}`}>{`@${post.authorName}`}</Link>
                     </Grid>
                     <Grid item>
-                    <Typography>{`Post by ${date}`}</Typography>
+                    <Typography>{`${date}`}</Typography>
                     </Grid>
                   </Grid>
                 </div>

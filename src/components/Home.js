@@ -27,7 +27,7 @@ export default class Home extends React.Component {
                 marginTop: '75vh'
               }}
             >
-              <Typography variant="h5">Sign In</Typography>
+              <Typography variant="h5">Sign Up</Typography>
             </Button>
           </Grid>
         </Grid>

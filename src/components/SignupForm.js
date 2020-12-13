@@ -90,7 +90,8 @@ export default class SignupForm extends React.Component {
               label="Username"
               type="username"
               id="username"
-              autoComplete="current-username"
+              placeholder="Type your username, 6-30 characters"
+              
             />
             <TextField
               variant="outlined"
@@ -102,6 +103,7 @@ export default class SignupForm extends React.Component {
               name="email"
               autoComplete="current-email"
               autoFocus
+              placeholder="Type your email"
             />
             <TextField
               variant="outlined"
@@ -112,7 +114,7 @@ export default class SignupForm extends React.Component {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              placeholder="Type your password, 6-30 characters"
             />
             <TextField
               variant="outlined"
@@ -123,7 +125,7 @@ export default class SignupForm extends React.Component {
               label="Repeat Password"
               type="password"
               id="repeatpassword"
-              autoComplete="current-password"
+              placeholder="Repeat your password"
             />
             <Button
               onClick={this.onSubmitButtonPressed}

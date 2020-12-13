@@ -71,8 +71,8 @@ export default class LoginForm extends React.Component {
               id="userInput"
               label="Email Address"
               name="email"
-              autoComplete="email"
               type="string"
+              placeholder="Type your username or email"
             />
             <TextField
               variant="outlined"
@@ -83,7 +83,7 @@ export default class LoginForm extends React.Component {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              placeholder="Type your password"
             />
             {this.redirectRender}
             <Button

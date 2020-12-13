@@ -48,7 +48,7 @@ export default class LoginForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div >
         <Container maxWidth="sm">
           <Grid container direction="row" spacing="2" alignItems="center">
             <Grid item>
@@ -95,12 +95,7 @@ export default class LoginForm extends React.Component {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container justify="flex-end">
               <Grid item>
                 <Link href="signup" variant="body2">
                   {"Don't have an account? Sign Up"}

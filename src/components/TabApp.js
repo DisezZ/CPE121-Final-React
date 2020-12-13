@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { lightBlue } from "@material-ui/core/colors";
-import CPEImage from "../image/AlternativeLogo.png";
+import CPEImage from "../image/LOGOwb@4x.png";
 
 export default class TabApp extends React.Component {
   constructor(props) {
@@ -71,7 +71,7 @@ export default class TabApp extends React.Component {
                         justify="space-between"
                         alignItems="center"
                       >
-                        <Grid item xs={4} lg={2}>
+                        <Grid item xs={2} lg={2}>
                           <div>
                             <Grid container justify="center">
                               <div>
@@ -84,7 +84,7 @@ export default class TabApp extends React.Component {
                             </Grid>
                           </div>
                         </Grid>
-                        <Grid item xs={4} lg={8}>
+                        <Grid item xs={4} lg={6}>
                           <div>
                             <Tabs
                               value={this.state.tabselected}
@@ -103,7 +103,7 @@ export default class TabApp extends React.Component {
                             </Tabs>
                           </div>
                         </Grid>
-                        <Grid item xs={6} lg={2}>
+                        <Grid item xs={2} lg={2}>
                           <div>
                             <Grid container justify="center">
                               <div>

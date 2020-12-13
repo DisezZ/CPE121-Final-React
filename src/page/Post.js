@@ -24,6 +24,7 @@ import {
 } from "@material-ui/core";
 import { mainTag, subTag } from "../tags.json";
 import { grey } from "@material-ui/core/colors";
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 
 const monthName = [
   "JAN",
@@ -46,7 +47,11 @@ export default class Posts extends React.Component {
     this.state = {
       loaded: false,
       post: {},
-      comments: [],
+      comments: {},
+      commented: false,
+      upvoted: false,
+      anonymous: false,
+      commentTypeArea: "",
     };
   }
 
@@ -63,28 +68,144 @@ export default class Posts extends React.Component {
       id: this.props.match.params.id,
     };
     await Axios.post(BaseURL + "/posted/", data).then((res) => {
-      const dateCreated = new Date(res.data.post.dateCreated);
+      var dateCreated = new Date(res.data.post.dateCreated);
       res.data.post.dateCreated = dateCreated;
-      this.setState({
-        post: res.data.post,
-        comments: res.data.comment,
-        loaded: true,
-      });
+      var newDate = []
+      res.data.comment.forEach((data, index) => {
+        dateCreated = new Date(data.dateCreated)
+        newDate.push(dateCreated)
+      })
+      res.data.comment.dateCreated = newDate
+      console.log(newDate)
+      this.setState(
+        {
+          post: res.data.post,
+          comments: res.data.comment,
+          loaded: true,
+        },
+        () => {
+          console.log(10)
+          this.state.post.upvoted.map((ID) => {
+            if (ID.userID === this.props.userInfo._id) {
+              //console.log("find")
+              this.setState({
+                upvoted: true,
+              });
+            }
+          });
+        }
+      );
     });
+  };
+
+  handleUpvoteClick = async () => {
+    const { post } = this.state;
+    const token = Cookie.get("token");
+    const to = post._id;
+    var data = {
+      token: token,
+      to: to,
+      action: "upvote",
+    };
+    Axios.post(BaseURL + "/postAction/", data).then(async (res) => {
+      if (res.data.value) {
+        if (this.state.upvoted) {
+          var index = -1;
+          var item = this.state.post.upvoted.filter((vote) => {
+            return vote.userID !== this.props.userInfo._id;
+          });
+          var temp = this.state.post;
+          temp.upvoted = item;
+          await this.setState(
+            {
+              post: temp,
+            },
+            () => console.log(this.state.post.upvoted)
+          );
+        } else {
+          var temp = this.state.post;
+          await temp.upvoted.push({
+            userID: this.props.userInfo._id,
+            username: this.props.userInfo.username,
+          });
+          await this.setState({
+            post: temp,
+          });
+        }
+        this.setState({ upvoted: !this.state.upvoted });
+      }
+    });
+  };
+
+  handleCheckBoxClick = () => {
+    this.setState({
+      anonymous: !this.state.anonymous,
+    });
+  };
+
+  handleReplyButtonSendClick = () => {
+    if (this.state.commentTypeArea !== "") {
+      this.handleCommentRequest();
+    } else {
+      alert("Need to Type before replying somethings...");
+    }
+  };
+
+  handleReplyButtonClearClick = () => {
+    this.setState(
+      {
+        commentTypeArea: "",
+      },
+      () => {
+        document.getElementById("Reply").value = "";
+      }
+    );
+  };
+
+  handleSearchType = (event) => {
+    this.setState({
+      commentTypeArea: event.target.value,
+    });
+  };
+
+  handleCommentRequest = () => {
+    const token = Cookie.get("token");
+    const data = {
+      to: this.state.post._id,
+      token: token,
+      content: document.getElementById("Reply").value,
+      anonymous: this.state.anonymous,
+    };
+    Axios.post(BaseURL + "/comment/", data).then((res) => {
+      if (res.data.value) {
+        this.postRequest();
+        this.handleReplyButtonClearClick();
+      } else {
+        alert("Seem something might went wrongs");
+      }
+    });
+  };
+
+  handleCommentButtonClick = async () => {
+    await document
+      .getElementById("Reply-Section")
+      .scrollIntoView({ behavior: "smooth" });
+  };
+
+  handleSwap = () => {
+    this.setState({ anonymous: !this.state.anonymous });
   };
 
   render() {
     const color = grey[300];
     const { post, comments } = this.state;
-    console.log(comments);
     const { userInfo } = this.props;
-    console.log(post);
     if (!this.state.loaded) {
       return <LoadingPage></LoadingPage>;
     } else {
       return (
         <div style={{ backgroundColor: "lightblue", minHeight: "90vh" }}>
-          <AppBar {...this.props}></AppBar>
+          <AppBar position="fixed" {...this.props}></AppBar>
           <Grid
             container
             direction="row"
@@ -140,7 +261,12 @@ export default class Posts extends React.Component {
                                         <div>
                                           <Grid container alignItems="center">
                                             <Grid item>
-                                              <UpvoteButton></UpvoteButton>
+                                              <UpvoteButton
+                                                status={this.state.upvoted}
+                                                handleUpvoteClick={
+                                                  this.handleUpvoteClick
+                                                }
+                                              ></UpvoteButton>
                                             </Grid>
                                             <Grid item>
                                               <Typography>{`${post.upvoted.length} Upvoted`}</Typography>
@@ -158,7 +284,11 @@ export default class Posts extends React.Component {
                                         <div>
                                           <Grid container alignItems="center">
                                             <Grid item>
-                                              <CommentButton></CommentButton>
+                                              <CommentButton
+                                                handleCommentClick={
+                                                  this.handleCommentButtonClick
+                                                }
+                                              ></CommentButton>
                                             </Grid>
                                             <Grid item>
                                               <Typography>{`${post.comment.length} Replies`}</Typography>
@@ -175,7 +305,7 @@ export default class Posts extends React.Component {
                         </Grid>
                       </Paper>
                     </Grid>
-                    <Grid item>
+                    <Grid item id="Reply-Section">
                       <Paper square style={{ padding: "15px" }}>
                         <Grid
                           container
@@ -207,19 +337,32 @@ export default class Posts extends React.Component {
                                             spacing={1}
                                           >
                                             <Grid item>
-                                              <Typography>
-                                                Reply As :
-                                              </Typography>
+                                              <Typography>As :</Typography>
                                             </Grid>
                                             <Grid item>
                                               <Avatar
-                                                src={userInfo.avatar}
+                                                src={
+                                                  this.state.anonymous
+                                                    ? `${Math.floor(
+                                                        Math.random() * 1000000
+                                                      )
+                                                        .toString(36)
+                                                        .substring(7)}`
+                                                    : userInfo.avatar
+                                                }
                                               ></Avatar>
                                             </Grid>
                                             <Grid item>
                                               <Typography>
-                                                {userInfo.username}
+                                                {this.state.anonymous
+                                                  ? "Anonymous"
+                                                  : userInfo.username}
                                               </Typography>
+                                            </Grid>
+                                            <Grid item>
+                                              <Button onClick={this.handleSwap}>
+                                                <SwapHorizIcon />
+                                              </Button>
                                             </Grid>
                                           </Grid>
                                         </div>
@@ -249,24 +392,28 @@ export default class Posts extends React.Component {
                             </div>
                           </Grid>
                           <Grid item>
-                            <Grid container justify="flex-end">
+                            <Grid container justify="flex-end" spacing={2}>
                               <Grid item>
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      checked={false}
-                                      onChange={this.handleCheckBoxClick}
-                                      name={`checkedAnonymous`}
-                                    />
-                                  }
-                                  label="Anonymous?"
-                                />
+                                <Button
+                                  onClick={this.handleReplyButtonClearClick}
+                                  style={{
+                                    backgroundColor: "orange",
+                                    borderRadius: "20px",
+                                  }}
+                                >
+                                  Clear
+                                </Button>
                               </Grid>
                               <Grid item>
-                                <Button>Clear</Button>
-                              </Grid>
-                              <Grid item>
-                                <Button>Reply Now</Button>
+                                <Button
+                                  onClick={this.handleReplyButtonSendClick}
+                                  style={{
+                                    backgroundColor: "lightblue",
+                                    borderRadius: "20px",
+                                  }}
+                                >
+                                  Reply Now
+                                </Button>
                               </Grid>
                             </Grid>
                           </Grid>

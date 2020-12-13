@@ -21,6 +21,10 @@ import {
 } from "@material-ui/core";
 import SortIcon from "@material-ui/icons/Sort";
 import { grey } from "@material-ui/core/colors";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -28,17 +32,13 @@ export default class Main extends React.Component {
     this.state = {
       loaded: false,
       posts: [],
-      filter: {
-        mainTag: [],
-        subTag: [],
+      mainTag: [],
+      subTag: [],
+      alert: {
+        status: false,
+        severity: "",
+        title: "",
       },
-      mainTag: mainTag.map(() => {
-        return false;
-      }),
-      subTag: subTag.map(() => {
-        return false;
-      }),
-      searchSubTag: "",
     };
   }
 
@@ -46,84 +46,39 @@ export default class Main extends React.Component {
     this.postRequest();
   }
 
-  handleTagSelectedChanged = async () => {
-    var main = []
-    var sub = []
-    await this.state.mainTag.forEach((tag, index) => {
-      if (tag === true) {
-        main.push(mainTag[index])
-      }
-    })
-    await this.state.subTag.forEach((tag, index) => {
-      if (tag === true) {
-        sub.push(subTag[index])
-      }
-    })
-    this.setState({
-      filter: {
-        mainTag: main,
-        subTag: sub
-      }
-    }, () => {
-      this.postRequest()
-    })
-  }
-
-  handleMainTagStatus = (index) => {
-    var items = this.state.mainTag
-    items[index] = !items[index]
-    this.setState({
-      mainTag: items
-    },() => {
-      this.handleTagSelectedChanged()
-      console.log(this.state.mainTag)
-    })
-  };
-
-  handleSubTagStatus = (index) => {
-    var items = this.state.subTag
-    items[index] = !items[index]
-    this.setState({
-      subTag: items
-    },() => {
-      this.handleTagSelectedChanged()
-      console.log(this.state.subTag)
-    })
-  };
-
-  handleSubTagSearchType = (event) => {
-    this.setState({
-      searchSubTag: event.target.value,
-    }, () => {
-      //console.log(this.state.searchSubTag)
-    });
-  };
-
-  handleSubTagSearchToBlank = () => {
-    this.setState({
-      searchSubTag: "",
-    });
-  }
-
   postRequest = async () => {
+    console.log(this.state.mainTag);
     const token = Cookie.get("token");
     const data = {
       token: token,
-      filter: this.state.filter,
+      mainTag: this.state.mainTag,
+      subTag: this.state.subTag,
     };
-    //console.log(data)
+    console.log(data.mainTag);
     await Axios.post(BaseURL + "/posts/", data).then((res) => {
-      const dateCreated = res.data.map((res, index) => {
-        const date = new Date(res.dateCreated);
-        return date;
-      });
-      for (let index = 0; index < res.data.length; index++) {
-        res.data[index].dateCreated = dateCreated[index];
+      if (!res.data.error) {
+        //console.log(res.data[0])
+        const dateCreated = res.data.map((res, index) => {
+          const date = new Date(res.dateCreated);
+          return date;
+        });
+        for (let index = 0; index < res.data.length; index++) {
+          res.data[index].dateCreated = dateCreated[index];
+        }
+        this.setState({
+          posts: res.data,
+          loaded: true,
+        });
+      } else {
+        console.log(res.data.error);
+        this.setState({
+          alert: {
+            status: true,
+            severity: "error",
+            title: "Somethings went wrong",
+          },
+        });
       }
-      this.setState({
-        posts: res.data,
-        loaded: true,
-      });
     });
   };
 
@@ -131,6 +86,19 @@ export default class Main extends React.Component {
     setTimeout(() => {
       this.props.history.push("/submit");
     }, 1000);
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({
+      alert: {
+        status: false,
+        severity: this.state.alert.severity,
+        title: this.state.alert.title,
+      },
+    });
   };
 
   render() {
@@ -149,7 +117,7 @@ export default class Main extends React.Component {
             flexGrow: 1,
           }}
         >
-          <AppBar {...this.props}></AppBar>
+          <AppBar position="fixed" {...this.props}></AppBar>
           <Grid
             container
             justify="center"
@@ -180,7 +148,10 @@ export default class Main extends React.Component {
                               alignItems="stretch"
                             >
                               <Grid item xs={6} style={{ height: "100%" }}>
-                                <Paper square style={{ height: "100%", padding: "15px" }}>
+                                <Paper
+                                  square
+                                  style={{ height: "100%", padding: "15px" }}
+                                >
                                   <Typography variant="h6">Notice:</Typography>
                                   <Typography>{Notice}</Typography>
                                 </Paper>
@@ -255,32 +226,95 @@ export default class Main extends React.Component {
                 </Grid>
                 <Grid container item xs={0} lg={3} direction="column">
                   <Grid item>
-                    <NavBar
-                      search={search}
-                      mainTagList={mainTagList}
-                      subTagList={subTagList}
-                      handleSearchType={this.handleSubTagSearchType}
-                      handleMainTagStatus={this.handleMainTagStatus}
-                      handleSubTagStatus={this.handleSubTagStatus}
-                      handleSearchToBlank={this.handleSubTagSearchToBlank}
-                    ></NavBar>
+                    <Paper
+                      square
+                      style={{
+                        width: "300px",
+                        height: "100%",
+                        position: "fixed",
+                        padding: "15px",
+                        overflow: "auto",
+                      }}
+                    >
+                      <Grid container direction="column" spacing={2}>
+                        <Grid item>
+                          <Typography>Main Tags:</Typography>
+                        </Grid>
+                        <Grid item>
+                          <Autocomplete
+                            style={{ backgroundColor: "white" }}
+                            onChange={(event, value) => {
+                              this.setState({ mainTag: value }, () => {
+                                console.log(typeof this.state.mainTag);
+                                this.postRequest();
+                              });
+                            }}
+                            openOnFocus
+                            multiple
+                            id="Main-Tag-Autocomplete"
+                            options={mainTag}
+                            getOptionLabel={(option) => option}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Main Tag"
+                                placeholder="Type to search..."
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Typography>Sub Tags:</Typography>
+                        </Grid>
+                        <Grid item>
+                          <Autocomplete
+                            style={{ backgroundColor: "white" }}
+                            onChange={(event, value) => {
+                              this.setState({ subTag: value }, () => {
+                                console.log("log");
+                                this.postRequest();
+                              });
+                            }}
+                            openOnFocus
+                            multiple
+                            limitTags={8}
+                            id="Sub-Tag-Autocomplete"
+                            options={subTag}
+                            getOptionLabel={(option) => option}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Sub Tag"
+                                placeholder="Type to search..."
+                              />
+                            )}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Paper>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
+          <Snackbar
+            open={this.state.alert.status}
+            autoHideDuration={6000}
+            onClose={this.handleClose}
+          >
+            <Alert
+              elevation={6}
+              variant="filled"
+              onClose={this.handleClose}
+              severity={this.state.alert.severity}
+            >
+              {this.state.alert.title}
+            </Alert>
+          </Snackbar>
         </div>
       );
     }
   }
-}
-
-{
-  /*<Grid item>
-                <PostList posts={this.state.posts} {...this.props}></PostList>
-              </Grid>*/
-}
-
-{
-  /*<TagsList></TagsList>/*/
 }

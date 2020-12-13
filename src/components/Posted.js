@@ -21,6 +21,8 @@ export default class Posted extends React.Component {
   }
 
   render() {
+    const dateCreated = new Date(this.props.post.dateCreated)
+    const date = `${dateCreated.getMonth()}/${dateCreated.getDate()}/${dateCreated.getFullYear()} ${dateCreated.getHours()}:${dateCreated.getMinutes()}`
     const color = grey[200];
     var subTag = this.state.subTag;
     var borderTop;
@@ -33,39 +35,49 @@ export default class Posted extends React.Component {
       borderTop = "0px";
     }
     return (
-      <Grid
-            container
-            alignItems="center"
-            justify="flex-start"
-          >
-            <Grid item xs={1} style={{}}>
-              <div>
-                <Grid container direction="column" alignItems="center">
-                  <Avatar alt="src" src={post.avatar} />
-                </Grid>
-              </div>
+      <Grid container alignItems="center" justify="flex-start">
+        <Grid item xs={3} md={1}>
+          <div>
+            <Grid container direction="column" alignItems="center">
+              <Avatar alt="src" src={post.avatar} />
             </Grid>
-            <Grid item xs={11}>
-              <div>
-                <Grid
-                  container
-                  direction="column"
-                  justify="center"
-                  alignItems="flex-start"
-                >
-                  <Grid item>
-                    <Typography>{post.topic}</Typography>
+          </div>
+        </Grid>
+        <Grid item xs={9} md={11}>
+          <div>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="flex-start"
+            >
+              <Grid item>
+                <Typography>{post.topic}</Typography>
+              </Grid>
+              <Grid item>
+                <Typography>{`#${post.mainTag} |${post.subTag.map((tag) => {
+                  return ` #${tag}`;
+                })}`}</Typography>
+              </Grid>
+              <Grid item>
+                <div>
+                  <Grid container spacing={1}>
+                    <Grid item>
+                    <Typography>{`Post by `}</Typography>
+                    </Grid>
+                    <Grid item>
+                    <Link href={`/user/${post.authorName}`}>{`@${post.authorName}`}</Link>
+                    </Grid>
+                    <Grid item>
+                    <Typography>{`Post by ${date}`}</Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Typography>{`#${post.mainTag} |${post.subTag.map((tag) => {return ` #${tag}`})}`}</Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography>{`Post by ${post.authorName}`}</Typography>
-                  </Grid>
-                </Grid>
-              </div>
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
+          </div>
+        </Grid>
+      </Grid>
     );
   }
 }

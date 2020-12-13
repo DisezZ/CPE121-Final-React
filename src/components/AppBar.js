@@ -73,7 +73,7 @@ export default class TabApp extends React.Component {
     return (
       <div>
         <AppBar
-          position="fixed"
+          position={this.props.position}
           style={{
             color: "black",
             backgroundColor: "white",

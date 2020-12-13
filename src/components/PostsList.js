@@ -16,7 +16,7 @@ export default class PostsList extends React.Component {
 
   render() {
     const posts = this.props.posts;
-    console.log(posts)
+    //console.log(posts)
     return (
         posts.map((post, index) => {
           return <Post index={index} key={index} post={post} {...this.props} />;

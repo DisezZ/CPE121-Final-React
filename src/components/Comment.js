@@ -21,6 +21,9 @@ export default class Comment extends React.Component {
 
   render() {
     const { index, comment } = this.props;
+    //console.log(typeof comment.dateCreated)
+    const dateCreated = new Date(comment.dateCreated)
+    const date = `${dateCreated.getMonth()}/${dateCreated.getDate()}/${dateCreated.getFullYear()} ${dateCreated.getHours()}:${dateCreated.getMinutes()}`
     const color = green[300];
     return (
       <Grid item style={{ marginLeft: "100px" }}>
@@ -39,7 +42,7 @@ export default class Comment extends React.Component {
                 {`@${comment.authorName}`}
               </Link>
             }
-            subheader={comment.dateCreated}
+            subheader={date}
           ></CardHeader>
           <CardContent>{comment.content}</CardContent>
         </Card>

@@ -26,6 +26,8 @@ import { mainTag, subTag } from "../tags.json";
 import { grey, blue, orange } from "@material-ui/core/colors";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 import MainBackground from "../image/Web1920–6@2x.png";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const monthName = [
   "JAN",
@@ -53,6 +55,12 @@ export default class Posts extends React.Component {
       upvoted: false,
       anonymous: false,
       commentTypeArea: "",
+      backdrop: false,
+      alert: {
+        status: false,
+        severity: "error",
+        title: "Missing Somethings",
+      },
     };
   }
 
@@ -145,10 +153,69 @@ export default class Posts extends React.Component {
   };
 
   handleReplyButtonSendClick = () => {
-    if (this.state.commentTypeArea !== "") {
-      this.handleCommentRequest();
-    } else {
-      alert("Need to Type before replying somethings...");
+    if (this.state.commentTypeArea === "") {
+      this.setState({
+        alert: {
+          status: true,
+          severity: "error",
+          title: "Comment Section mustn't be blank",
+        },
+      });
+    } else if (this.state.backdrop === false) {
+      this.setState(
+        {
+          backdrop: true,
+        },
+        () => {
+          const token = Cookie.get("token");
+          const data = {
+            to: this.state.post._id,
+            token: token,
+            content: document.getElementById("Reply").value,
+            anonymous: this.state.anonymous,
+          };
+          Axios.post(BaseURL + "/comment/", data).then(async (res) => {
+            if (res.data.value) {
+              await this.setState(
+                {
+                  alert: {
+                    status: true,
+                    severity: "info",
+                    title: "Sending...",
+                  },
+                },
+                () => this.setState({ backdrop: false })
+              );
+              await this.postRequest();
+              await this.handleReplyButtonClearClick();
+              await this.setState(
+                {
+                  alert: {
+                    status: true,
+                    severity: "success",
+                    title: "Comment Success",
+                  },
+                },
+                () => this.setState({ backdrop: false })
+              );
+              this.setState({
+                backdrop: false,
+              });
+            } else {
+              this.setState(
+                {
+                  alert: {
+                    status: true,
+                    severity: "error",
+                    title: "Created Post Failed!, Somethings went wrong",
+                  },
+                },
+                () => this.setState({ backdrop: false })
+              );
+            }
+          });
+        }
+      );
     }
   };
 
@@ -169,24 +236,6 @@ export default class Posts extends React.Component {
     });
   };
 
-  handleCommentRequest = () => {
-    const token = Cookie.get("token");
-    const data = {
-      to: this.state.post._id,
-      token: token,
-      content: document.getElementById("Reply").value,
-      anonymous: this.state.anonymous,
-    };
-    Axios.post(BaseURL + "/comment/", data).then((res) => {
-      if (res.data.value) {
-        this.postRequest();
-        this.handleReplyButtonClearClick();
-      } else {
-        alert("Seem something might went wrongs");
-      }
-    });
-  };
-
   handleCommentButtonClick = async () => {
     await document
       .getElementById("Reply-Section")
@@ -195,6 +244,19 @@ export default class Posts extends React.Component {
 
   handleSwap = () => {
     this.setState({ anonymous: !this.state.anonymous });
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({
+      alert: {
+        status: false,
+        severity: this.state.alert.severity,
+        title: this.state.alert.title,
+      },
+    });
   };
 
   render() {
@@ -325,7 +387,11 @@ export default class Posts extends React.Component {
                       </Paper>
                     </Grid>
                     <Grid item id="Reply-Section">
-                      <Paper square style={{ padding: "15px", height: "100%" }} id="paper">
+                      <Paper
+                        square
+                        style={{ padding: "15px", height: "100%" }}
+                        id="paper"
+                      >
                         <Grid
                           container
                           direction="column"
@@ -446,6 +512,20 @@ export default class Posts extends React.Component {
                                 >
                                   Reply Now
                                 </Button>
+                                <Snackbar
+                                  open={this.state.alert.status}
+                                  autoHideDuration={6000}
+                                  onClose={this.handleClose}
+                                >
+                                  <Alert
+                                    elevation={6}
+                                    variant="filled"
+                                    onClose={this.handleClose}
+                                    severity={this.state.alert.severity}
+                                  >
+                                    {this.state.alert.title}
+                                  </Alert>
+                                </Snackbar>
                               </Grid>
                             </Grid>
                           </Grid>

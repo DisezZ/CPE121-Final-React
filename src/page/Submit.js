@@ -19,6 +19,8 @@ import {
   Link,
   Divider,
   Menu,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import { grey, blue, orange } from "@material-ui/core/colors";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -42,6 +44,7 @@ export default class Submit extends React.Component {
         title: "Error",
         severity: "error",
       },
+      backdrop: false,
     };
   }
 
@@ -67,42 +70,49 @@ export default class Submit extends React.Component {
           title: "Missing Somethings",
         },
       });
-    } else {
-      const token = Cookie.get("token");
-      const data = {
-        token: token,
-        anonymous: anonymous,
-        mainTag: mainTag,
-        subTag: subTag,
-        topic: topicBar,
-        content: contentBar,
-      };
-      this.setState({
-        mainTag: null,
-        topicBar: "",
-        contentBar: ""
-      },() => {
-        Axios.post(BaseURL + "/post", data).then((res) => {
-          console.log(res.data);
-          if (res.data.value) {
-            this.setState({
-              alert: {
-                status: true,
-                severity: "success",
-                title: "Created Post Finished!",
-              },
-            });
-          } else {
-            this.setState({
-              alert: {
-                status: true,
-                severity: "error",
-                title: "Created Post Failed!",
-              },
-            });
-          }
-        });
-      })
+    } else if (this.state.backdrop === false) {
+      this.setState(
+        {
+          backdrop: true,
+        },
+        () => {
+          const token = Cookie.get("token");
+          const data = {
+            token: token,
+            anonymous: anonymous,
+            mainTag: mainTag,
+            subTag: subTag,
+            topic: topicBar,
+            content: contentBar,
+          };
+          Axios.post(BaseURL + "/post", data).then((res) => {
+            console.log(res.data);
+            if (res.data.value) {
+              this.setState(
+                {
+                  alert: {
+                    status: true,
+                    severity: "success",
+                    title: "Created Post Finished!",
+                  },
+                },
+                () => this.setState({ backdrop: false })
+              );
+            } else {
+              this.setState(
+                {
+                  alert: {
+                    status: true,
+                    severity: "error",
+                    title: "Created Post Failed!",
+                  },
+                },
+                () => this.setState({ backdrop: false })
+              );
+            }
+          });
+        }
+      );
     }
   };
 

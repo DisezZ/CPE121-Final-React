@@ -31,7 +31,7 @@ export default class TabApp extends React.Component {
 
   handleLogOutButtonClick = async () => {
     await Cookie.remove("token");
-    window.location.reload();
+    this.props.history.push("/")
   };
 
   handleProfileButtonClick = () => {

@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { lightBlue } from "@material-ui/core/colors";
-import CPEImage from "../image/AlternativeLogo.png"
+import CPEImage from "../image/AlternativeLogo.png";
 
 export default class TabApp extends React.Component {
   constructor(props) {
@@ -44,11 +44,7 @@ export default class TabApp extends React.Component {
     if (this.state.tabselected == 0) {
       return <Home {...this.props}></Home>;
     } else if (this.state.tabselected == 1) {
-      return <News {...this.props}></News>;
-    } else if (this.state.tabselected == 2) {
       return <AboutUs {...this.props}></AboutUs>;
-    } else if (this.state.tabselected == 3) {
-      return <Help {...this.props}></Help>;
     }
   };
 
@@ -58,9 +54,94 @@ export default class TabApp extends React.Component {
       <div>
         <AppBar
           position="static"
-          style={{ color: "black", backgroundColor: "white" }}
+          style={{
+            color: "black",
+            backgroundColor: "white",
+            maxHeight: "65px",
+          }}
         >
-          <Grid
+          <Grid direction="column" alignItems="stretch">
+            <Grid item>
+              <div>
+                <Grid container justify="center" alignItems="center">
+                  <Grid item xs={12} md={9}>
+                    <div>
+                      <Grid
+                        container
+                        justify="space-between"
+                        alignItems="center"
+                      >
+                        <Grid item xs={4} lg={2}>
+                          <div>
+                            <Grid container justify="center">
+                              <div>
+                                <img
+                                  src={CPEImage}
+                                  style={{ height: "65px" }}
+                                  onClick={this.handleCPEButtonClick}
+                                />
+                              </div>
+                            </Grid>
+                          </div>
+                        </Grid>
+                        <Grid item xs={4} lg={8}>
+                          <div>
+                            <Tabs
+                              value={this.state.tabselected}
+                              onChange={this.handleTabsChange}
+                              aria-label="simple tabs example"
+                              centered
+                              indicatorColor="primary"
+                              variant="fullWidth"
+                              style={{ height: "65px" }}
+                            >
+                              <Tab label="HOME" style={{ height: "65px" }} />
+                              <Tab
+                                label="ABOUT US"
+                                style={{ height: "65px" }}
+                              />
+                            </Tabs>
+                          </div>
+                        </Grid>
+                        <Grid item xs={6} lg={2}>
+                          <div>
+                            <Grid container justify="center">
+                              <div>
+                                <Button
+                                  variant="outlined"
+                                  onClick={this.handleLogInButtonClick}
+                                  startIcon={<ExitToAppIcon />}
+                                  style={{
+                                    borderRadius: 20,
+                                    color: lightBlue[400],
+                                    borderColor: lightBlue[400],
+                                    backgroundColor: "white",
+                                    minWidth: "10vw",
+                                    minHeight: "6vh",
+                                  }}
+                                >
+                                  <Typography>Log In</Typography>
+                                </Button>
+                              </div>
+                            </Grid>
+                          </div>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  </Grid>
+                </Grid>
+              </div>
+            </Grid>
+          </Grid>
+        </AppBar>
+        {tabContent}
+      </div>
+    );
+  }
+}
+{
+  /**
+<Grid
             container
             justify="space-around"
             alignItems="center"
@@ -104,10 +185,5 @@ export default class TabApp extends React.Component {
             >
               <Typography>Log In</Typography>
             </Button>
-          </Grid>
-        </AppBar>
-        {tabContent}
-      </div>
-    );
-  }
+          </Grid> */
 }

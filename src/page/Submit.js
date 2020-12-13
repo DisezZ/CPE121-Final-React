@@ -25,6 +25,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import MainBackground from "../image/Web1920–6@2x.png";
 
 export default class Submit extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ export default class Submit extends React.Component {
     });
   };
 
-  handlePostButtonClick = () => {
+  handlePostButtonClick = async () => {
     const { anonymous, mainTag, subTag, topicBar, contentBar } = this.state;
     if (mainTag === null || topicBar === "" || contentBar === "") {
       this.setState({
@@ -76,26 +77,32 @@ export default class Submit extends React.Component {
         topic: topicBar,
         content: contentBar,
       };
-      Axios.post(BaseURL + "/post", data).then((res) => {
-        console.log(res.data);
-        if (res.data.value) {
-          this.setState({
-            alert: {
-              status: true,
-              severity: "success",
-              title: "Created Post Finished!",
-            },
-          });
-        } else {
-          this.setState({
-            alert: {
-              status: true,
-              severity: "error",
-              title: "Created Post Failed!",
-            },
-          });
-        }
-      });
+      this.setState({
+        mainTag: null,
+        topicBar: "",
+        contentBar: ""
+      },() => {
+        Axios.post(BaseURL + "/post", data).then((res) => {
+          console.log(res.data);
+          if (res.data.value) {
+            this.setState({
+              alert: {
+                status: true,
+                severity: "success",
+                title: "Created Post Finished!",
+              },
+            });
+          } else {
+            this.setState({
+              alert: {
+                status: true,
+                severity: "error",
+                title: "Created Post Failed!",
+              },
+            });
+          }
+        });
+      })
     }
   };
 
@@ -117,12 +124,19 @@ export default class Submit extends React.Component {
   };
 
   render() {
-    const colorBlue = blue[600]
+    const colorBlue = blue[600];
     const { userInfo } = this.props;
     const color = grey[300];
     const { loaded } = this.props;
     return (
-      <div style={{ backgroundColor: "lightblue", minHeight: "100vh" }}>
+      <div
+        style={{
+          backgroundImage: `url(${MainBackground})`,
+          minHeight: "100vh",
+          backgroundAttachment: "fixed",
+          backgroundSize: "cover",
+        }}
+      >
         <AppBar position="static" {...this.props}></AppBar>
         <Grid
           container
@@ -130,7 +144,7 @@ export default class Submit extends React.Component {
           direction="column"
           alignItems="center"
           justify="center"
-          style={{paddingTop: "8vh"}}
+          style={{ paddingTop: "8vh" }}
         >
           <Grid item xs={12} lg={10}>
             <Paper style={{ width: "60vw", padding: "20px" }}>
@@ -146,7 +160,7 @@ export default class Submit extends React.Component {
                       justify="space-between"
                     >
                       <Grid item xs={3}>
-                        <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        <Typography variant="h5" style={{ fontWeight: "bold" }}>
                           Create Post :
                         </Typography>
                       </Grid>
@@ -159,7 +173,9 @@ export default class Submit extends React.Component {
                             spacing={1}
                           >
                             <Grid item>
-                              <Typography style={{fontWeight: "bold"}}>As :</Typography>
+                              <Typography style={{ fontWeight: "bold" }}>
+                                As :
+                              </Typography>
                             </Grid>
                             <Grid item>
                               <Avatar
@@ -281,7 +297,7 @@ export default class Submit extends React.Component {
                                 height: "100%",
                                 borderRadius: "20px",
                                 backgroundColor: colorBlue,
-                                color: "white"
+                                color: "white",
                               }}
                               onClick={this.handlePostButtonClick}
                             >

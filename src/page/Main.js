@@ -26,6 +26,9 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import MainBackground from "../image/Web1920–6@2x.png";
+import CPEBackground from "../image/PrimaryLogo-eng@3x.png";
+import NavBackGround from "../image/Chitchat4@4x.png";
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -113,9 +116,10 @@ export default class Main extends React.Component {
       return (
         <div
           style={{
-            backgroundColor: "lightblue",
+            backgroundImage: `url(${MainBackground})`,
             minHeight: "100vh",
-            flexGrow: 1,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
           }}
         >
           <AppBar position="fixed" {...this.props}></AppBar>
@@ -154,7 +158,9 @@ export default class Main extends React.Component {
                                   style={{ height: "100%", padding: "15px" }}
                                 >
                                   <Typography variant="h6">Notice:</Typography>
-                                  <Typography variant="body2">{Notice}</Typography>
+                                  <Typography variant="body2">
+                                    {Notice}
+                                  </Typography>
                                 </Paper>
                               </Grid>
                               <Grid item xs={6}>
@@ -199,7 +205,9 @@ export default class Main extends React.Component {
                         </Grid>
                         <Grid item>
                           <Paper square style={{ padding: "15px" }}>
-                            <Typography variant="h6" >Pinned Thread :</Typography>
+                            <Typography variant="h6">
+                              Pinned Thread :
+                            </Typography>
                             <Typography variant="h6">Hot Thread :</Typography>
                             <Grid container justify="space-between">
                               <Typography variant="h6">Thread :</Typography>
@@ -239,7 +247,12 @@ export default class Main extends React.Component {
                     >
                       <Grid container direction="column" spacing={2}>
                         <Grid item>
-                          <Typography variant="h6" style={{marginTop: "10px"}}>Main Tags:</Typography>
+                          <Typography
+                            variant="h6"
+                            style={{ marginTop: "10px" }}
+                          >
+                            Main Tags:
+                          </Typography>
                         </Grid>
                         <Grid item>
                           <Autocomplete
@@ -266,10 +279,15 @@ export default class Main extends React.Component {
                           />
                         </Grid>
                         <Grid item>
-                        <Divider />
+                          <Divider />
                         </Grid>
                         <Grid item>
-                          <Typography variant="h6" style={{marginTop: "10px"}}>Sub Tags:</Typography>
+                          <Typography
+                            variant="h6"
+                            style={{ marginTop: "10px" }}
+                          >
+                            Sub Tags:
+                          </Typography>
                         </Grid>
                         <Grid item>
                           <Autocomplete
@@ -297,7 +315,15 @@ export default class Main extends React.Component {
                           />
                         </Grid>
                         <Grid item>
-                        <Divider />
+                          <Divider />
+                        </Grid>
+                        <Grid item>
+                          <div style={{margin: "50px"}}>
+                            <img
+                              src={NavBackGround}
+                              style={{ maxWidth: "100%", opacity: "80%" }}
+                            />
+                          </div>
                         </Grid>
                       </Grid>
                     </Paper>

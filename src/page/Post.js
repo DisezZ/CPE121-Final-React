@@ -25,6 +25,7 @@ import {
 import { mainTag, subTag } from "../tags.json";
 import { grey, blue, orange } from "@material-ui/core/colors";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import MainBackground from "../image/Web1920–6@2x.png";
 
 const monthName = [
   "JAN",
@@ -151,8 +152,8 @@ export default class Posts extends React.Component {
     }
   };
 
-  handleReplyButtonClearClick = () => {
-    this.setState(
+  handleReplyButtonClearClick = async (stop) => {
+    await this.setState(
       {
         commentTypeArea: "",
       },
@@ -197,8 +198,8 @@ export default class Posts extends React.Component {
   };
 
   render() {
-    const colorBlue = blue[600]
-    const colorOrange = orange[900]
+    const colorBlue = blue[600];
+    const colorOrange = orange[900];
     const color = grey[300];
     const { post, comments } = this.state;
     const { userInfo } = this.props;
@@ -206,7 +207,14 @@ export default class Posts extends React.Component {
       return <LoadingPage></LoadingPage>;
     } else {
       return (
-        <div style={{ backgroundColor: "lightblue", minHeight: "90vh" }}>
+        <div
+          style={{
+            backgroundImage: `url(${MainBackground})`,
+            minHeight: "100vh",
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
+          }}
+        >
           <AppBar position="fixed" {...this.props}></AppBar>
           <Grid
             container
@@ -221,12 +229,17 @@ export default class Posts extends React.Component {
                     container
                     direction="column"
                     alignItems="stretch"
-                    spacing={4}
+                    spacing={2}
                   >
                     <Grid item>
                       <Paper square style={{ height: "100%", padding: "15px" }}>
                         <Grid item>
-                          <Typography variant="h6" style={{fontWeight: "bold"}}>Posts :</Typography>
+                          <Typography
+                            variant="h6"
+                            style={{ fontWeight: "bold" }}
+                          >
+                            Posts :
+                          </Typography>
                         </Grid>
                         <Grid container style={{ padding: "15px" }}>
                           <Grid
@@ -312,74 +325,85 @@ export default class Posts extends React.Component {
                       </Paper>
                     </Grid>
                     <Grid item id="Reply-Section">
-                      <Paper square style={{ padding: "15px" }}>
+                      <Paper square style={{ padding: "15px", height: "100%" }} id="paper">
                         <Grid
                           container
                           direction="column"
                           alignItems="stretch"
-                          spacing={1}
+                          spacing={2}
                         >
-                          <Grid item>
-                            <div>
-                              <Grid container justify="space-between">
-                                <Grid item xs={5}>
-                                  <Typography variant="h6" style={{fontWeight: "bold"}}>Reply :</Typography>
-                                </Grid>
-                                <Grid item xs={5}>
-                                  <div>
-                                    <Grid
-                                      direction="column"
-                                      container
-                                      spacing={2}
-                                      justify="center"
-                                      alignItems="flex-end"
-                                    >
-                                      <Grid item>
-                                        <div>
-                                          <Grid
-                                            container
-                                            justify="flex-end"
-                                            alignItems="center"
-                                            spacing={1}
-                                          >
-                                            <Grid item>
-                                              <Typography style={{fontWeight: "bold"}}>As :</Typography>
-                                            </Grid>
-                                            <Grid item>
-                                              <Avatar
-                                                src={
-                                                  this.state.anonymous
-                                                    ? `${Math.floor(
-                                                        Math.random() * 1000000
-                                                      )
-                                                        .toString(36)
-                                                        .substring(7)}`
-                                                    : userInfo.avatar
-                                                }
-                                              ></Avatar>
-                                            </Grid>
-                                            <Grid item>
-                                              <Typography >
-                                                {this.state.anonymous
-                                                  ? "Anonymous"
-                                                  : userInfo.username}
-                                              </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                              <Button onClick={this.handleSwap}>
-                                                <SwapHorizIcon />
-                                              </Button>
-                                            </Grid>
-                                          </Grid>
-                                        </div>
-                                      </Grid>
-                                    </Grid>
-                                  </div>
-                                </Grid>
+                          <Grid container item id="top-section">
+                            <Grid
+                              direction="row"
+                              container
+                              justify="space-between"
+                            >
+                              <Grid item xs={5}>
+                                <Typography
+                                  variant="h6"
+                                  style={{ fontWeight: "bold" }}
+                                >
+                                  Reply :
+                                </Typography>
                               </Grid>
-                            </div>
+                              <Grid item xs={5}>
+                                <div>
+                                  <Grid
+                                    direction="column"
+                                    container
+                                    spacing={2}
+                                    justify="center"
+                                    alignItems="flex-end"
+                                  >
+                                    <Grid item>
+                                      <div>
+                                        <Grid
+                                          container
+                                          justify="flex-end"
+                                          alignItems="center"
+                                          spacing={1}
+                                        >
+                                          <Grid item>
+                                            <Typography
+                                              style={{ fontWeight: "bold" }}
+                                            >
+                                              As :
+                                            </Typography>
+                                          </Grid>
+                                          <Grid item>
+                                            <Avatar
+                                              src={
+                                                this.state.anonymous
+                                                  ? `${Math.floor(
+                                                      Math.random() * 1000000
+                                                    )
+                                                      .toString(36)
+                                                      .substring(7)}`
+                                                  : userInfo.avatar
+                                              }
+                                            ></Avatar>
+                                          </Grid>
+                                          <Grid item>
+                                            <Typography>
+                                              {this.state.anonymous
+                                                ? "Anonymous"
+                                                : userInfo.username}
+                                            </Typography>
+                                          </Grid>
+                                          <Grid item>
+                                            <Button onClick={this.handleSwap}>
+                                              <SwapHorizIcon />
+                                            </Button>
+                                          </Grid>
+                                        </Grid>
+                                      </div>
+                                    </Grid>
+                                  </Grid>
+                                </div>
+                              </Grid>
+                            </Grid>
                           </Grid>
-                          <Grid item>
+                          <Grid item id="type-section">
                             <div>
                               <TextField
                                 variant="outlined"
@@ -405,7 +429,7 @@ export default class Posts extends React.Component {
                                   style={{
                                     backgroundColor: colorOrange,
                                     borderRadius: "20px",
-                                    color: "white"
+                                    color: "white",
                                   }}
                                 >
                                   Clear
@@ -417,7 +441,7 @@ export default class Posts extends React.Component {
                                   style={{
                                     backgroundColor: colorBlue,
                                     borderRadius: "20px",
-                                    color: "white"
+                                    color: "white",
                                   }}
                                 >
                                   Reply Now

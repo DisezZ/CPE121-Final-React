@@ -75,7 +75,7 @@ export default class Submit extends React.Component {
         {
           backdrop: true,
         },
-        () => {
+        async () => {
           const token = Cookie.get("token");
           const data = {
             token: token,
@@ -85,6 +85,13 @@ export default class Submit extends React.Component {
             topic: topicBar,
             content: contentBar,
           };
+          await this.setState({
+            alert: {
+              status: true,
+              severity: "info",
+              title: "Sending...",
+            },
+          });
           Axios.post(BaseURL + "/post", data).then((res) => {
             console.log(res.data);
             if (res.data.value) {

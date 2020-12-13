@@ -166,7 +166,7 @@ export default class Posts extends React.Component {
         {
           backdrop: true,
         },
-        () => {
+        async () => {
           const token = Cookie.get("token");
           const data = {
             to: this.state.post._id,
@@ -174,18 +174,15 @@ export default class Posts extends React.Component {
             content: document.getElementById("Reply").value,
             anonymous: this.state.anonymous,
           };
+          await this.setState({
+            alert: {
+              status: true,
+              severity: "info",
+              title: "Sending...",
+            },
+          });
           Axios.post(BaseURL + "/comment/", data).then(async (res) => {
             if (res.data.value) {
-              await this.setState(
-                {
-                  alert: {
-                    status: true,
-                    severity: "info",
-                    title: "Sending...",
-                  },
-                },
-                () => this.setState({ backdrop: false })
-              );
               await this.postRequest();
               await this.handleReplyButtonClearClick();
               await this.setState(

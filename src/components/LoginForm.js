@@ -3,37 +3,80 @@ import Axios from "axios";
 import Cookie from "js-cookie";
 import { BaseURL } from "../defaults.json";
 import {
-    Grid, Avatar, Container, Typography, TextField, Button, Link
+  Grid,
+  Avatar,
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Link,
 } from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       errorStatus: "",
+      alert: {
+        status: false,
+        title: "Error",
+        severity: "error",
+      },
+      backdrop: false,
     };
   }
 
-  onSubmitButtonPressed = () => {
-    const userInput = document.getElementById("userInput").value
-    const password = document.getElementById("password").value
+  onSubmitButtonPressed = async () => {
+    const userInput = document.getElementById("userInput").value;
+    const password = document.getElementById("password").value;
     const data = {
-        userInput: userInput,
-        password: password
-    }
+      userInput: userInput,
+      password: password,
+    };
+    await this.setState({
+      alert: {
+        status: true,
+        severity: "info",
+        title: "Sending...",
+      },
+    });
     Axios.post(BaseURL + "/login", data).then(async (res) => {
       if (res.data.error) {
         this.setState({
-          errorStatus: res.data.error,
+          alert: {
+            status: true,
+            severity: "error",
+            title: res.data.error,
+          },
         });
       } else {
+        await this.setState({
+          alert: {
+            status: true,
+            severity: "success",
+            title: res.data.value,
+          },
+        });
         await Cookie.set("token", res.data.token);
-        await window.location.reload()
-        setTimeout(() => {
-          this.props.history.push("/");
-        },1000)
+        await window.location.reload();
+        this.props.history.push("/");
       }
+    });
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({
+      alert: {
+        status: false,
+        severity: this.state.alert.severity,
+        title: this.state.alert.title,
+      },
     });
   };
 
@@ -48,7 +91,7 @@ export default class LoginForm extends React.Component {
 
   render() {
     return (
-      <div >
+      <div>
         <Container maxWidth="sm">
           <Grid container direction="row" spacing="2" alignItems="center">
             <Grid item>
@@ -69,7 +112,7 @@ export default class LoginForm extends React.Component {
               required
               fullWidth
               id="userInput"
-              label="Email Address"
+              label="Email Address/ Username"
               name="email"
               type="string"
               placeholder="Type your username or email"
@@ -102,7 +145,20 @@ export default class LoginForm extends React.Component {
                 </Link>
               </Grid>
             </Grid>
-            <Typography>{this.state.errorStatus}</Typography>
+            <Snackbar
+              open={this.state.alert.status}
+              autoHideDuration={6000}
+              onClose={this.handleClose}
+            >
+              <Alert
+                elevation={6}
+                variant="filled"
+                onClose={this.handleClose}
+                severity={this.state.alert.severity}
+              >
+                {this.state.alert.title}
+              </Alert>
+            </Snackbar>
           </form>
         </Container>
       </div>

@@ -1,7 +1,7 @@
 {
     "BaseURL": "https://backend-cpe-web-board.herokuapp.com",
     "URL": "http://localhost:3000",
-    "Notice": "",
+    "Notice": "This is a beta version, Changes that takes on this version might be changes due to somes changes that takes on the programs",
     "Members": [
         {
             "firstName": "Lutfee",

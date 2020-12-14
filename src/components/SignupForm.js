@@ -11,41 +11,84 @@ import {
   Container,
 } from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 export default class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorStatus: ""
+      errorStatus: "",
+      alert: {
+        status: false,
+        title: "Error",
+        severity: "error",
+      },
+      backdrop: false,
     };
   }
 
-  onSubmitButtonPressed = () => {
-    const username = document.getElementById("username").value
-    const email = document.getElementById("email").value
-    const password = document.getElementById("password").value
-    const repeatpassword = document.getElementById("repeatpassword").value
+  onSubmitButtonPressed = async () => {
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const repeatpassword = document.getElementById("repeatpassword").value;
     if (password == repeatpassword) {
       const data = {
-      username: username,
-      email: email,
-      password: password,
-    };
-    console.log(data);
-    Axios.post(BaseURL + "/register", data).then(async (res) => {
-      if (res.data.error) {
-        this.setState({
-          errorStatus: res.data.error,
-        });
-      } else {
-        this.props.history.push("/login");
-      }
-    });
+        username: username,
+        email: email,
+        password: password,
+      };
+      console.log(data);
+      await this.setState({
+        alert: {
+          status: true,
+          severity: "info",
+          title: "Sending...",
+        },
+      });
+      Axios.post(BaseURL + "/register", data).then(async (res) => {
+        if (res.data.error) {
+          this.setState({
+            alert: {
+              status: true,
+              severity: "error",
+              title: res.data.error,
+            },
+          });
+        } else {
+          this.setState({
+            alert: {
+              status: true,
+              severity: "success",
+              title: res.data.value,
+            },
+          });
+          this.props.history.push("/login");
+        }
+      });
     } else {
-      this.setState({
-        errorStatus: "Password must be the same!"
-      })
+      await this.setState({
+        alert: {
+          status: true,
+          severity: "error",
+          title: "Password must be the same",
+        }
+      });
     }
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({
+      alert: {
+        status: false,
+        severity: this.state.alert.severity,
+        title: this.state.alert.title,
+      },
+    });
   };
 
   /*onUsernameChange = (event) => {
@@ -91,7 +134,6 @@ export default class SignupForm extends React.Component {
               type="username"
               id="username"
               placeholder="Type your username, 6-30 characters"
-              
             />
             <TextField
               variant="outlined"
@@ -135,9 +177,20 @@ export default class SignupForm extends React.Component {
             >
               Sign Up
             </Button>
-            <Grid container justify='center' >
-              <Typography color='error' >{this.state.errorStatus}</Typography>
-            </Grid>
+            <Snackbar
+              open={this.state.alert.status}
+              autoHideDuration={6000}
+              onClose={this.handleClose}
+            >
+              <Alert
+                elevation={6}
+                variant="filled"
+                onClose={this.handleClose}
+                severity={this.state.alert.severity}
+              >
+                {this.state.alert.title}
+              </Alert>
+            </Snackbar>
           </form>
         </Container>
       </div>

@@ -31,6 +31,7 @@ export default class TabApp extends React.Component {
 
   handleLogOutButtonClick = async () => {
     await Cookie.remove("token");
+    window.location.reload()
     this.props.history.push("/")
   };
 
@@ -113,9 +114,6 @@ export default class TabApp extends React.Component {
                         >
                           {username}
                         </Button>
-                        <Hidden lgUp>
-                          <Button>Tags</Button>
-                        </Hidden>
                         <Menu
                           id="simple-menu"
                           anchorEl={this.state.menu}
@@ -132,10 +130,6 @@ export default class TabApp extends React.Component {
                             horizontal: "center",
                           }}
                         >
-                          <MenuItem onClick={this.handleProfileButtonClick}>
-                            Profile
-                          </MenuItem>
-                          <MenuItem>My account</MenuItem>
                           <MenuItem onClick={this.handleLogOutButtonClick}>
                             Logout
                           </MenuItem>

@@ -111,7 +111,7 @@ export default class Submit extends React.Component {
                   alert: {
                     status: true,
                     severity: "error",
-                    title: "Created Post Failed!",
+                    title: res.data.error,
                   },
                 },
                 () => this.setState({ backdrop: false })

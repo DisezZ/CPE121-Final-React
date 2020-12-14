@@ -6,6 +6,7 @@ import {
   blue,
   grey
 } from "@material-ui/core/colors"
+import {MainLorem} from '../defaults.json'
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -51,16 +52,7 @@ export default class Home extends React.Component {
                   }}
                 >
                   <Typography variant="body1" style={{ fontWeight: "bold", color: grey[800] }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Vestibulum quis luctus sapien. Phasellus commodo quam ut
-                    lacus vehicula scelerisque. Vivamus velit urna, luctus non
-                    egestas et, porta nec nibh. Ut semper tortor sit amet leo
-                    pharetra eleifend. Etiam lobortis semper nibh sit amet
-                    laoreet. Integer eget ante magna. Mauris tortor ligula,
-                    elementum at ultrices at, scelerisque id nisl. Donec posuere
-                    augue ut neque malesuada, in volutpat elit feugiat.
-                    Pellentesque bibendum metus at scelerisque aliquet.
-                    Curabitur eu scelerisque justo.
+                    {MainLorem}
                   </Typography>
                 </div>
               </Grid>

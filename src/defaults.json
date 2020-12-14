@@ -1,7 +1,8 @@
 {
-    "BaseURL": "https://backend-cpe-web-board.herokuapp.com",
-    "URL": "http://localhost:3000",
+    "BaseURL": "http://localhost:5000",
+    "URL": "https://backend-cpe-web-board.herokuapp.com",
     "Notice": "This is a beta version, Changes that takes on this version might be changes due to somes changes that takes on the programs",
+    "MainLorem": "Welcome to the new world, The best CPE community. Our CPE Web Board create a new and enjoyful web board for CPE student can come to and have a conversation or interaction with each others. We are greeting you all to join us here, At CPE Web Board Community Driven!",
     "Members": [
         {
             "firstName": "Lutfee",
